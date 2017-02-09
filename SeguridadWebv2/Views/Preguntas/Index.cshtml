@@ -1,0 +1,60 @@
+﻿@model SeguridadWebv2.Models.Aplicacion.PreguntaGeneralViewModel
+@{
+    ViewBag.Title = "Preguntas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="question col-md-12">
+    <div class="container">
+        @using (Html.BeginForm("SendQuestion", "Preguntas", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary("", new { @class = "text-error" })
+            <div class="col-md-6">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <span class="danger">
+                            <i class="fa fa-envelope-o">
+                            </i>
+                        </span>
+                        Cual es su consulta?
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">    
+                            @Html.Label("Pregunta: ", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-9 input-group">
+                                @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Tipee su pregunta aquí, por ejemplo: Hola, soy mujer, tengo 25 años y hace más de 2 meses que tengo un dolor en la espalda. He utilizado todo tipo de cremas para aliviar el dolor sin encontrar resultado, ¿Que me recomiendan? ¿Que puedo hacer?.", maxlength = "300", rows = "7" })
+                                @Html.ValidationMessageFor(model => model.Descripcion, null, new { @class = "help-block text-center" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-9 input-group">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-envelope-square">
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Telefono, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-9 input-group">
+                                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control" })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-envelope-square">
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-9 input-group">
+                                <input type="submit" class="btn btn-danger btn-block" value="Enviar" />
+                                <label class="col-md-9 control-label pull-left">Consultorio Virtual reserva el anonimato de su pregunta  * Respuestas Rápidas</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    </div>

@@ -1,0 +1,61 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Raleway:400,700,900);
+@import url(http://fonts.googleapis.com/css?family=Lato:400,900);
+
+body {
+    color: #3C4866;
+    background: url('../Content/img/doctor_online.jpg') no-repeat center center fixed; 
+    font-family: 'Oswald', sans-serif;
+	font-weight: lighter;
+    padding: 0px !important;
+    margin: 0px !important;
+    font-size:13px;
+}
+.indexcontainer {
+    padding-top: 65px;
+}
+
+/* ################################################################
+	Menu Navegación
+################################################################# */
+.navbar {
+	min-height: 65px;
+	padding-top: 10px;
+	margin-bottom: 0px;
+}
+
+.navbar-brand {
+	font-family: 'Raleway', sans-serif;
+	font-weight: 900;
+}
+
+.navbar-header .navbar-brand {
+	color: #f9f6f1;
+}
+
+.navbar-brand > a:hover {
+	color: #f9f6f1;
+}
+
+.navbar-default .navbar-nav > li > a {
+	color: white;
+	font-weight: 700;
+	font-size: 12px;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+	color: #FF0000;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+	color: #00b3fe;
+	background-color: transparent;
+}
+
+.navbar-default {
+	background-color: #384452; /*#384452 */
+	border-color: transparent;
+}
+
+/*	################################################################
+	Fin Menu Navegación
+################################################################# */

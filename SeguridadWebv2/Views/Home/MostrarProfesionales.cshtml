@@ -1,0 +1,68 @@
+﻿@model SeguridadWebv2.Models.Aplicacion.PreguntasEspecialistaViewModel
+@{
+    ViewBag.Title = "Consulta con Profesionales de la Salud";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        @using (Html.BeginForm("Index", "Preguntas", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary()
+            <div class="col-md-4 pull-right">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <span class="danger">
+                            <i class="fa fa-envelope-o">
+                            </i>
+                        </span>
+                        Pregunta sin cargo a los Especialistas
+                    </div>
+                    <div class="panel-body">
+                            @Html.TextArea("mensaje", new { @class = "form-control", placeholder = "Tipee su pregunta aquí, la misma será enviada de forma anónima y será respondida en las proximas 24 o 48 hrs.", maxlength = "300", rows = "7" })
+                    </div>
+                    <div class="form-group">
+                            <label class="col-md-6 control-label pull-left">Consultorio Virtual reserva el anonimato de su pregunta</label>
+                            <div class="col-md-6">
+                                <input type="submit" class="btn btn-danger btn-block" value="Enviar" />
+                            </div>
+                    </div>
+                </div>
+            </div>
+        }
+@if (Model.Especialistas.Count() > 0)
+{
+            foreach (var especialista in Model.Especialistas.ToList())
+            {
+                <div class="col-md-8">
+                    <div class="panel panel-danger">
+                        <div class="panel-body">
+                            <div class="col-md-3">
+                                <img src="@Url.Content(especialista.ImagenMedico)" class="img-circle img-responsive" />
+                            </div>
+                            <div class="col-md-5">
+                                <div class="header">
+                                    <h4 style="color: #3333FF"> @especialista.Nombre @especialista.Apellido</h4>
+                                    <h5>@especialista.Especialidad.NombreEspecialidad</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                @especialista.PhoneNumber <br />
+                                @especialista.NumeroMatricula
+                                <i class="fa fa-video-camera fa-5x" aria-hidden="true"></i>
+                                <div>
+                                    <a href="@Url.Action("Turnos", "Especialista", new { id = @especialista.Id })" class="btn btn-danger"><i class="fa fa-heart-o"></i> Consultar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+}
+else
+{
+    @: <div class="text-muted">&nbsp;No se encontraron Especialistas.</div>
+}
+        </div>
+    </div>
+</div>

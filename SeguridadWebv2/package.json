@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "consultoriovirtual",
+  "private": true,
+  "devDependencies": {},
+  "description": "Consultorio Virtual App Hibrida",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "William Gustavo Santisteban",
+  "license": "MIT"
+}

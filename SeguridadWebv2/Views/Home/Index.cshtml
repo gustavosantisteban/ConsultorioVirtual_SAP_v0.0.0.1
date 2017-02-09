@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+<aside class="bg-dark">
+    <div class="container text-center">
+        <div class="call-to-action">
+            <h2>Porque elegir Consultorio Virtual</h2>
+            <div class="col-lg-3 col-sm-6">
+                    <img class="img-responsive center-block" src="~/Content/img/doctor.png" alt="Imagen" />
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                20,000+ Doctores Verificados
+                            </div>
+                            <div class="project-name">
+                                Todos los doctores de Consultorio virtual pasan un riguroso proceso de verificación.
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                    <img class="img-responsive center-block" src="~/Content/img/first-aid-kit.png" alt="Imagen" />
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                24 * 7 acceso a la Salud
+                            </div>
+                            <div class="project-name">
+                                Fácil acceso para realizar tus consultas en cualquier momento, desde cualquier lugar.
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">>
+                    <img class="img-responsive center-block" src="~/Content/img/price-tag.png" alt="Imagen" />
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Ahorre Tiempo & Dinero
+                            </div>
+                            <div class="project-name">
+                                Ahorre hasta el 70% de su tiempo y dinero por cada consulta.
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                    <img class="img-responsive center-block" src="~/Content/img/locked.png" alt="Imagen" />
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Seguridad 100% Garantizada
+                            </div>
+                            <div class="project-name">
+                                Proteccion de sus datos y devolución de su dinero en caso de no estar satisfecho con nuestro servicio.
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</aside>
+<section class="no-padding" id="portfolio">
+    @Html.Partial("_EspecialidadesIndex")
+</section>
+
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            var searchBoxBloodHound = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.NombreEspecialidad);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/Home/BuscarEspecialidades?busqueda=%QUERY',
+                    wildcard: '%QUERY',
+
+                    // the returned json contains an array of strings, but the Bloodhound
+                    // suggestion engine expects JavaScript objects so this converts all of
+                    // those strings into objects containing the properties, title and author
+                    filter: function (especialidades) {
+                        console.log(especialidades);
+                        return $.map(especialidades, function (data) {
+                            return {
+                                nombre: data
+                            }
+                        });
+                    },
+                },
+            });
+
+            searchBoxBloodHound.initialize();
+
+            $('#scrollable-dropdown-menu #mensaje-busqueda #searchBox').typeahead(null, {
+                displayKey: 'nombre',
+                source: searchBoxBloodHound.ttAdapter(),
+                //limit: 10,
+                templates: {
+                    empty: [
+                      '<div class="empty-message">',
+                        'Lo siento, no se pudo encontrar la especialidad y/o el profesional.',
+                      '</div>'
+                    ].join('\n'),
+                    suggestion: Handlebars.compile('<p><strong>{{nombre}}</strong></p>')
+                    //suggestion: function (data) {
+                    //    return '<p><strong>' + data.NombreEspecialidad + '</strong></p>'
+                    //}
+                }
+            });
+        });
+</script>

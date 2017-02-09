@@ -1,0 +1,115 @@
+﻿@model SeguridadWebv2.Models.RegistrarseEspViewModel
+@{
+    ViewBag.Title = "Registrar Especialista";
+    Layout = "~/Views/Shared/_LayoutEspecialista.cshtml";
+}
+<br />
+<div>
+    <div class="col-md-8">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-heart"></span> @ViewBag.Title
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Registrarse", "Especialista", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Nombre, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-user">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Apellido, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                            @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-user">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-envelope-square">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-lock">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-lock">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Telefono, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                            @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-phone-square">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Especialidad", new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                            @Html.DropDownListFor(model => model.IdEspecialidad, new SelectList(ViewBag.Especialidades, "EspecialidadId", "NombreEspecialidad"), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IdEspecialidad, "", new { @class = "text-danger" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-heartbeat">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Matricula, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8 input-group">
+                           @Html.TextBoxFor(m => m.Matricula, new { @class = "form-control" })
+                           @Html.ValidationMessageFor(model => model.Matricula, "", new { @class = "text-danger" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-edit">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-6">
+                            <input type="submit" class="btn btn-success" value="Registrarse" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

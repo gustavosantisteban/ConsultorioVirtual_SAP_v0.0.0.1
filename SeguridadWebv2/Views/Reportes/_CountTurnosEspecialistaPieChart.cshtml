@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "PieChartTurnos";
+}
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Cantidad de Turnos</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <div class="chart">
+        <canvas id="bar-chart" height="200" width="200"></canvas>
+    </div>
+</div>
+<script>
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: '/Reportes/JsonPieChartEspecialistaTurnos',
+                data: '{}',
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (especialistasTurnosCount) {
+                    console.log("todos los datos recibidos :" + especialistasTurnosCount);
+                    var lbl = [];
+                    var dataset = [];
+
+                    for (var i = 0; i < especialistasTurnosCount.length; i++) {
+                        lbl.push(especialistasTurnosCount[i].EstadoTurno);
+                        dataset.push(especialistasTurnosCount[i].dia);
+                    }
+
+                    var cdata = {
+                        labels: lbl,
+                        datasets: [{
+                            label: "Estasdo de Turnos",
+                            fillColor: "#00a65a",
+                            strokeColor: "#00a65a",
+                            pointColor: "#00a65a",
+                            pointStrokeColor: "rgba(60,141,188,1)",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(60,141,188,1)",
+                            data: dataset
+                        }]
+
+                    };
+                    console.log("AllData: " + cdata);
+                    console.log("Chart Data: " + especialistasTurnosCount);
+                    Chart.defaults.global.responsive = true;
+                    var ctx = $("#bar-chart").get(0).getContext('2d');
+                    var barchart = new Chart(ctx).Bar(cdata, {
+                        scaleGridLineWidth: 1
+                    });
+                },
+                error: function (data) {
+                    alert("Chart Error: " + data);
+                }
+            });
+        });
+</script>
+
+
+

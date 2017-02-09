@@ -1,0 +1,24 @@
+﻿@model IEnumerable<SeguridadWebv2.Models.Aplicacion.Especialidad>
+
+    <div class="container-fluid">
+        <div class="row no-gutter popup-gallery">
+                @foreach (var especialidad in Model)
+                {
+                    <div class="col-lg-4 col-sm-6">
+                        <a href="@Url.Content(especialidad.Imagen)" class="portfolio-box">
+                            <img class="img-responsive" src="@Url.Content(especialidad.Imagen)" alt="Imagen" />
+                            <div class="portfolio-box-caption">
+                                <div class="portfolio-box-caption-content">
+                                    <div class="project-category text-faded">
+                                        @especialidad.NombreEspecialidad
+                                    </div>
+                                    <div class="project-name">
+                                        Consulte con los mejores especialistas en el área de @especialidad.NombreEspecialidad para.
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+        </div>
+    </div>

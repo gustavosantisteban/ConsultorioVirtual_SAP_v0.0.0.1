@@ -1,0 +1,176 @@
+﻿@model SeguridadWebv2.Models.Aplicacion.EspecialistaVM
+
+
+<body>
+    <br />
+    <br />
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+            <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Apellido)</dt>
+            <dd>@Html.DisplayFor(model => model.Apellido)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd>@Html.DisplayFor(model => model.Email)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Telefono)</dt>
+            <dd>@Html.DisplayFor(model => model.Telefono)</dd>
+            <dt>@Html.DisplayNameFor(model => model.NumeroMatricula)</dt>
+            <dd>@Html.DisplayFor(model => model.NumeroMatricula)</dd>
+        </dl>
+
+       
+    <div>
+        @if (Model.Relaciones != null)
+            {
+            @Html.ActionLink("Crear Horario", "Create", "Horario", null, new { @class = "btn btn-success btn-lg" })
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Turnos.FirstOrDefault().Dia)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Turnos.FirstOrDefault().HoraInicio)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Turnos.FirstOrDefault().HoraFin)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Turnos.FirstOrDefault().EstadoTurno)
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+                @foreach (var relaciones in Model.Relaciones)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => relaciones.Turnos.FirstOrDefault().Dia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => relaciones.Turnos.FirstOrDefault().HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => relaciones.Turnos.FirstOrDefault().HoraFin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => relaciones.Turnos.FirstOrDefault().EstadoTurno)
+                        </td>
+                        
+                            @Html.ActionLink("Crear Horario", "Create", "Horario", new { item = @relaciones.Turnos.FirstOrDefault().RelacionId }, new { @class = "btn btn-success btn-lg", @id = "buttonhorario" })
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            @Html.Display("No se encontraron Horarios Asociados")
+            @Html.ActionLink("Agregar Grupo", "Agregar", new { @class = "btn btn-success btn-lg" })
+            <span class="glyphicon glyphicon-pencil">
+            </span>
+                <p>Mis Turnos</p>
+        }
+    </div>
+
+        </div>
+
+
+        <div>
+            @if (Model.Horarios != null)
+            {
+            @Html.ActionLink("Crear Horario", "Create", "Horario", null, new { @class = "btn btn-success btn-lg" })
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Horarios.FirstOrDefault().Dia)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Horarios.FirstOrDefault().HoraInicio)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Horarios.FirstOrDefault().Duracion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Horarios.FirstOrDefault().Mes)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Horarios.FirstOrDefault().Especialista)
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+                @foreach (var horario in Model.Horarios)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => horario.Dia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => horario.HoraInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => horario.Duracion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => horario.Mes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => horario.Especialista.Nombre)
+                            @Html.DisplayFor(modelItem => horario.Especialista.Apellido)
+                        </td>
+                        <td>
+                            <button id="buttonhorario" class="btn btn-default" value="@horario.IDHorario"></button>
+                        </td>
+                    </tr>
+                }
+            </table>
+            }
+            else
+            {
+                @Html.Display("No se encontraron Horarios Asociados")
+                @Html.ActionLink("Agregar Grupo", "Agregar", new { @class = "btn btn-success btn-lg" })
+                <span class="glyphicon glyphicon-pencil">
+                </span>
+                <p>Mis Horarios</p>
+            }
+        </div>
+            
+        <div id="listadohorariosdisponibles"></div>
+        @*<h2>@Html.ActionLink("Horarios Disponibles", "Index", "HorarioDisponibles")</h2>
+        <h2>@Html.ActionLink("Obras Sociales", "Index", "ObraSocial")</h2>
+        <div class="display-label">
+            <table class="table">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.ObrasSociales.FirstOrDefault().Nombre)</th>
+                </tr>
+                @foreach (var obraSocial in Model.ObrasSociales)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => obraSocial.Nombre)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </fieldset>
+    <p>*@
+        @*@Html.ActionLink("Edit", "Edit", new { id = Model. }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+</body>
+
+<script>
+    $.ajax({
+            datatype: "text/plain",
+            type: "GET",
+            url: 'Horario/ListHorarioDisponibles',
+            data: $('#buttonhorario').val(),
+            cache: false,
+            success: function (data) {
+                $('#listadohorariosdisponibles').html(data);
+            }
+    });
+</script>

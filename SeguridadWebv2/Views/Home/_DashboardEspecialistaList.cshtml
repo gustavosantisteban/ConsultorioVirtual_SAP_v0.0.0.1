@@ -1,0 +1,60 @@
+﻿@model SeguridadWebv2.Models.ViewModels.DashboardEspecialistaVM
+
+@if (Model.TurnosViewModel.Count() > 0)
+{
+    <div class="col-md-12">
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="col-md-8">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Mis Turnos</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                        <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table no-margin">
+                            <thead>
+                                <tr>
+                                    <th>Día</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Fin</th>
+                                    <th>Precio</th>
+                                    <th>Precio</th>
+                                    <th>Paciente</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.TurnosViewModel)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Dia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.HoraInicio)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.HoraFin)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Precio)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EstadoTurno)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.FullNamePacienteTurno)</td>
+                                        <td><a href="@Url.Action("GetDetalleReserva", "Reserva", new { id = item.IdTurno })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-ok-circle"></span> Ver Detalle</a></td>
+                                        <td><a href="@Url.Action("Iniciar", "VideoConferencia", new { id = item.IdTurno })" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-facetime-video"></span>VideoConferencia</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                </div><!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    <a href="@Url.Action("", "")" class="btn btn-sm btn-info btn-flat pull-right">Ver Todos mis Turnos</a>
+                </div><!-- /.box-footer -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+        <!--FIN LATEST ORDER-->
+        <div class="col-md-4">
+            <div class="col-md-4">
+                @Html.Partial("~/Views/Reportes/_CountTurnosEspecialistaPieChart.cshtml")
+            </div>
+        </div>
+    </div>
+}

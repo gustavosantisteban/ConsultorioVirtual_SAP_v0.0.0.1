@@ -1,0 +1,96 @@
+﻿@model SeguridadWebv2.Models.ViewModels.HorarioViewModel
+@{
+    ViewBag.Title = "Detalle";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<h2>Detalles Horario</h2>
+<div>
+    <h4>Detalles del Horario.</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CantidadTurnos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CantidadTurnos)
+        </dd>
+    </dl>
+</div>
+
+
+@if (Model.Especialista != null)
+{
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="well well-sm">
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <img src="@Url.Content(Model.Especialista.ImagenMedico)" alt="" class="img-rounded img-responsive" />
+                </div>
+                <div class="col-sm-6 col-md-8">
+                    <h4>
+                        @Html.DisplayFor(model => Model.FullNombreEspecialista)
+                    </h4>
+                    <small>
+                        <cite title="Rosario, ARG">
+                            Rosario, ARG <i class="glyphicon glyphicon-map-marker">
+                            </i>
+                        </cite>
+                    </small>
+                    <p>
+                        <i class="glyphicon glyphicon-envelope"></i>@Html.DisplayFor(model => Model.Especialista.PhoneNumber)
+                        <br />
+                        <i class="glyphicon glyphicon-gift"></i>@Html.DisplayFor(model => Model.Especialista.UserName)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.HorariosDisponibles.Count() > 0)
+{
+    <div class="row">
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>Día</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Fin</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.HorariosDisponibles)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Dia)</td>
+                        <td>@Html.DisplayFor(modelItem => item.HoraInicio)</td>
+                        <td>@Html.DisplayFor(modelItem => item.HoraFin)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Precio)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Disponible)</td>
+                        <td class="text-center">
+                            @if (User.IsInRole("Admin") || User.IsInRole("Detalle_HorarioDisponible") || User.IsInRole("Profesionales"))
+                    {<a href="@Url.Action("Detalle", "Horario", new { id = item.Id })" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span> Detalle</a>}
+                            @if (User.IsInRole("Admin") || User.IsInRole("Editar_HorarioDisponible") || User.IsInRole("Profesionales"))
+                    {<a href="@Url.Action("Editar", "Horario", new { id = item.Id })" class='btn btn-info btn-xs'><span class="glyphicon glyphicon-edit"></span> Editar</a>}
+                            @if (User.IsInRole("Admin") || User.IsInRole("Eliminar_HorarioDisponible") || User.IsInRole("Profesionales"))
+                    {<a href="@Url.Action("Eliminar", "Horario", new { id = item.Id })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Eliminar</a>}
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div>No se encontraron Horarios Asignados</div>
+}
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDHorario }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

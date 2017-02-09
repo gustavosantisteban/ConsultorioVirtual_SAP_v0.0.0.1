@@ -1,0 +1,22 @@
+﻿        <div class="row">
+            <div class="header-content-inner">
+                <h1 class="text-danger">Busca los mejores Especialistas de la Salud</h1>
+                <h2 class="text-danger">En cualquier momento, desde cualquier lugar</h2>
+            </div>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="well">
+                        @using (Html.BeginForm("MostrarProfesionales", "Home", FormMethod.Get))
+                        {
+                            <div id="scrollable-dropdown-menu">
+                                <div id="mensaje-busqueda" class="input-group">
+                                    @Html.ValidationSummary(true)
+                                    @Html.TextBox("especialidad", null, new { @class = "form-control", @placeholder = "Buscar por Especialidad y/o Profesional", @id = "searchBox" })
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-danger">Buscar</button>
+                                    </span>
+                                </div>
+                            </div><!-- /scrollable-dropdown-menu -->
+                        }
+                    </div><!-- /well -->
+                </div><!-- /.col-lg-8 -->
+            </div><!-- /.row -->

@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/adminPanel")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <link rel="stylesheet" href="/Content/jquery.gritter.css" />
+    <link rel="stylesheet" href="/Content/notifications/notifications.min.css" />
+    @*@Scripts.Render("~/bundles/jquery")*@
+</head>
+<body>
+    <div>
+    <section id="container">
+        <div class="navbar navbar-fixed-top">
+            <header class="header black-bg">
+                @Html.ActionLink("Consultorio Virtual", "Index", "Home", null, new { @class = "navbar-brand" })
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
+                            <li>@{ Html.RenderPartial("_NotificationDropdown"); }</li>
+                        }
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </header>
+        </div>
+        <div>
+            <!--sidebar start-->
+            <aside>
+                @Html.Partial("_DashboardIzquierdo")
+            </aside>
+            <!--sidebar end-->
+
+
+            <section id="main-content">
+                <section class="wrapper">
+                    @RenderBody()
+                </section>
+            </section>
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+    </section>
+    </div>
+        @{Html.RenderPartial("_NotificationModal");}
+        @Scripts.Render("~/bundles/signalr")
+        @Scripts.Render("~/bundles/NotificationsJs")
+        <script>
+            username = '@User.Identity.Name';
+
+            $(document).ready(function () {
+
+                //var testhub = $.connection.notificationMessageHub;
+                //var vm = new NotificationsViewModel({ username: username, readType: 'click' });
+                //ko.applyBindings(vm);
+                //$.connection.hub.start().done(function () {
+                //    vm.init();
+                //});
+                _connect = function (username, onSuccess, onFailure) {
+                    var hub = $.connection.webRtcHub;
+                    $.support.cors = true;
+                    $.connection.hub.url = '/signalr/hubs';
+                    $.connection.hub.start()
+                        .done(function () {
+                            console.log('connected to SignalR hub... connection id: ' + _hub.connection.id);
+
+                            // Tell the hub what our username is
+                            hub.server.join(username);
+
+                            if (onSuccess) {
+                                onSuccess(hub);
+                            }
+                        })
+                        .fail(function (event) {
+                            if (onFailure) {
+                                onFailure(event);
+                            }
+                        });
+
+                    // Setup client SignalR operations
+                    _setupHubCallbacks(hub);
+                    _hub = hub;
+                },
+
+                _start = function (hub) {
+                    // Show warning if WebRTC support is not detected
+                    if (webrtcDetectedBrowser == null) {
+                        console.log('Su navegador no soporta el formato WebRTC.');
+                        $('.browser-warning').show();
+                    }
+
+                // Then proceed to the next step, gathering username
+                _getUsername();
+                }
+          });
+
+        </script>
+
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/adminPanelJs")
+        @RenderSection("scripts", required: false)
+</body>
+</html>

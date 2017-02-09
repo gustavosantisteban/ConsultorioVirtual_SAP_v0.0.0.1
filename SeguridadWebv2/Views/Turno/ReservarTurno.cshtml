@@ -1,0 +1,149 @@
+﻿@model SeguridadWebv2.Models.Aplicacion.TurnoReservaViewModel
+
+<h2>ReservarTurno</h2>
+
+<div class="row">
+        @using (Html.BeginForm("ConfirmarPagoReserva", "Turno", FormMethod.Post))
+        {
+            <div class="col-md-12">
+                <div class="col-md-8">
+                    <!--FORM TARJETA DE CREDITO-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><img class="pull-right" src="~/Content/img/tarjetas_aceptadas.png">Forma y Detalles de Pago</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="control-label col-md-3"><strong>Tipo Tarjeta</strong></div>
+                                <div class="col-md-8 input-group">
+                                    @Html.DropDownList("IdTipoTarjeta", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.TarjetaViewModel.IdTipoTarjeta, "", new { @class = "text-danger" })
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-credit-card">
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="control-label col-md-3"><strong>Numero de Tarjeta</strong></div>
+                                <div class="col-md-8 input-group">
+                                    @Html.TextBoxFor(model => model.TarjetaViewModel.NumeroTarjeta, new { @class = "form-control", placeholder = "Ingrese los 16 digitos de su tarjeta" })
+                                    @Html.ValidationMessageFor(model => model.TarjetaViewModel.NumeroTarjeta, "", new { @class = "text-danger" })
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-credit-card">
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-4 col-sm-3 col-xs-3">
+                                    <div class="control-label"><strong> Mes de Expiración</strong></div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            @Html.DropDownList("IdMesTarjeta", (SelectList)ViewBag.IdMesTarjeta, htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.TarjetaViewModel.IdMesTarjeta, "", new { @class = "text-danger" })
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar-plus-o">
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-sm-3 col-xs-3">
+                                    <div class="control-label"><strong>Año de Expiración</strong></div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            @Html.DropDownList("IdAnoExp", (SelectList)ViewBag.IdAnoExp, htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.TarjetaViewModel.IdAnoExp, "", new { @class = "text-danger" })
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar-minus-o">
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-sm-3 col-xs-3">
+                                    <div class="control-label"><strong>CVV de Seguridad</strong></div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            @Html.PasswordFor(model => model.TarjetaViewModel.CodigoSeguridad, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.TarjetaViewModel.CodigoSeguridad, "", new { @class = "text-danger" })
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-credit-card-alt">
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-6 col-sm-6 col-xs-3">
+                                    <div class="control-label"><strong>Nombre Del Titular Tarjeta</strong></div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.TarjetaViewModel.NombreClienteTarjeta, new { @class = "form-control", placeholder = "Nombre Titular de la Tarjeta" })
+                                            @Html.ValidationMessageFor(model => model.TarjetaViewModel.NombreClienteTarjeta, "", new { @class = "text-danger" })
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-user">
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-3">
+                                    <div class="control-label"><strong>DNI Titular</strong></div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.TarjetaViewModel.DNIClienteTarjeta, new { @class = "form-control", placeholder = "DNI Titular de la Tarjeta" })
+                                            @Html.ValidationMessageFor(model => model.TarjetaViewModel.DNIClienteTarjeta, "", new { @class = "text-danger" })
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-tags">
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-danger">
+                        <div class="panel-body">
+                            <div class="col-md-3">
+                                <img src="@Url.Content(@Model.TurnoViewModel.Horario.Horario.Especialista.ImagenMedico)" class="img-circle img-responsive" />
+                            </div>
+                            <div class="col-md-9">
+                                <div class="header">
+                                    @Html.HiddenFor(x => x.TurnoViewModel.Horario.Id, new { @class = "idesp" })
+                                    @Model.TurnoViewModel.Horario.Horario.Especialista.Prefijo @Model.TurnoViewModel.Horario.Horario.Especialista.Nombre @Model.TurnoViewModel.Horario.Horario.Especialista.Apellido
+                                    @Model.TurnoViewModel.Horario.Horario.Especialista.PhoneNumber
+                                    @Model.TurnoViewModel.Horario.Horario.Especialista.NumeroMatricula
+                                </div>
+                                <div class="jumbotron">
+                                    @Model.TurnoViewModel.Horario.Horario.Dia.ToString()
+                                    @Model.TurnoViewModel.Horario.HoraInicio.ToString()
+                                    @Model.TurnoViewModel.Horario.HoraFin.ToString()
+                                    @Model.TurnoViewModel.Horario.Precio
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-6 col-xs-6 pad-adjust">
+                    <input type="submit" class="btn btn-warning btn-block" value="PAGAR" />
+                </div>
+            </div>
+        }
+</div>
+
+@section Scripts {
+   @Scripts.Render("~/bundles/jqueryval")
+}
+
