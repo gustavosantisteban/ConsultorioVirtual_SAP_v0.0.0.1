@@ -1,26 +1,187 @@
-﻿<div class="jumbotron">
-    <form action="~/VideoConferencia/SubirArchivosConsulta" class="dropzone" id="dropzoneJsForm"></form>
+﻿@model SeguridadWebv2.Models.Aplicacion.File
+<div class="jumbotron">
+    @if (Model != null)
+    {
+        <img src="@Url.Content(Model.FullPath)" alt="Image" />
+    }
+    else
+    {
+        <p>No se encontraron imagenes compartidas</p>
+    }
 </div>
-@section scripts {
+@*
+<style type="text/css">
+.dz-max-files-reached {
+     background-color: red;
+}
+</style>
+
+@section scripts{
     <script type="text/javascript">
 
-        Dropzone.options.dropzoneJsForm = {
-
-            //prevents Dropzone from uploading dropped files immediately
-            autoProcessQueue: true,
-
+        Dropzone.options.dropzoneForm = {
+            maxFiles: 10,
             init: function () {
-                //var submitButton = document.querySelector("#submit-all");
-                var myDropzone = this; //closure
+                this.on("maxfilesexceeded", function (data) {
+                    var res = eval('(' + data.xhr.responseText + ')');
+                });
 
-                //submitButton.addEventListener("click", function () {
-                    myDropzone.processQueue(); //tell Dropzone to process all queued files
-                //});
+                this.on("addedfile", function (file) {
+                    // Create the remove button
+                    var removeButton = Dropzone.createElement("<button>Remove file</button>");
 
+                    // Capture the Dropzone instance as closure.
+                    var _this = this;
+
+                    // Listen to the click event
+                    removeButton.addEventListener("click", function (e) {
+                        // Make sure the button click doesn't submit the form:
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Remove the file preview.
+                        _this.removeFile(file);
+                        // If you want to the delete the file on the server as well,
+                        // you can do the AJAX request here.
+                    });
+
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(removeButton);
+                });
             }
         };
 
+
     </script>
-}
+}*@
 
 
+@*<div class="jumbotron">
+    <form action="~/VideoConferencia/SubirArchivosConsulta" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+            <input type="submit" value="Upload" />
+        </div>
+    </form>
+</div>
+
+
+<style type="text/css">
+    .dz-max-files-reached {
+        background-color: red;
+    }
+</style>
+
+@section scripts {
+        <script type="text/javascript" > 
+            
+            
+    //        Dropzone.options.dropzoneJsForm = {
+    //        addRemoveLinks: true, //prevents Dropzone from uploading dropped files immediately autoProcessQueue: true, //previewsContainer: ".dropzone-previews", uploadMultiple: true, //parallelUploads: 100, //maxFiles: 100, //dictDefaultMessage: "", init: function ();
+
+    //{
+    //    //var submitButton = document.querySelector("#submit-all");
+    //    var myDropzone = this;
+    //    //closure //submitButton.addEventListener("click", function () {
+    //                //myDropzone.processQueue(); //tell Dropzone to process all queued files
+    //            //});
+    //    this .on("complete", function (data) {
+    //                //var res = eval('(' + data.xhr.responseText + ')');
+    //                var res = JSON.parse(data.xhr.responseText);
+    //                console.log(res);
+    //            });
+    //    //$.getJSON("/VideoConferencia/SubirArchivosConsulta/").done(function (data) {
+
+    //                //    if (data.Data != '') {
+    //                //          $.each(data.Data, function (index, item) {
+    //                //            var mockFile = {
+    //                //                name: item.IdFile
+    //                //            };
+
+    //                //            // Call the default addedfile event handler
+    //                //            thisDropzone.emit("addedfile", mockFile);
+
+    //                //            // And optionally show the thumbnail of the file:
+    //                //            thisDropzone.emit("thumbnail", mockFile, item.FullPath);
+
+    //                //            // If you use the maxFiles option, make sure you adjust it to the
+    //                //            // correct amount:
+    //                //            //var existingFileCount = 1; // The number of files already uploaded
+    //                //            //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+    //                //        });
+    //                //    }
+    //                //});
+    //    //this.on("success", function (file, response) {
+    //                //    file.serverId = response;
+    //                //    console.log(file.serverId);
+
+    //                //});
+    //    //this.on("removedfile", function (file) {
+    //                //    if (!file.serverId) { return; }
+    //                //    console.log(file.serverId);
+    //                //});
+    //    this .on("maxfilesexceeded", function (data) {
+    //                    var res = eval('(' + data.xhr.responseText + ')');
+
+    //                });
+    //    this .on("addedfile", function (file) {
+
+    //                    // Create the remove button
+    //                    var removeButton = Dropzone.createElement("<button>Remove file</button>");
+
+    //                    // Capture the Dropzone instance as closure.
+    //                    var _this = this;
+
+    //                    // Listen to the click event
+    //                    removeButton.addEventListener("click", function (e) {
+    //                        // Make sure the button click doesn't submit the form:
+    //                        e.preventDefault();
+    //                        e.stopPropagation();
+    //                        // Remove the file preview.
+    //                        _this.removeFile(file);
+    //                        // If you want to the delete the file on the server as well,
+    //                        // you can do the AJAX request here.
+    //                    });
+
+    //                    // Add the button to the file preview element.
+    //                    file.previewElement.appendChild(removeButton);
+    //                });
+    //}
+
+    //}
+            //;
+
+            //File Upload response from the server
+            Dropzone.options.dropzoneForm = {
+                maxFiles: 15,
+                init: function () {
+                    this.on("maxfilesexceeded", function (data) {
+                        var res = eval('(' + data.xhr.responseText + ')');
+
+                    });
+                    this.on("addedfile", function (file) {
+
+                        // Create the remove button
+                        var removeButton = Dropzone.createElement("<button>Remove file</button>");
+
+
+                        // Capture the Dropzone instance as closure.
+                        var _this = this;
+
+                        // Listen to the click event
+                        removeButton.addEventListener("click", function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Remove the file preview.
+                            _this.removeFile(file);
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+
+                        // Add the button to the file preview element.
+                        file.previewElement.appendChild(removeButton);
+                    });
+                }
+            };
+        </script >
+}*@

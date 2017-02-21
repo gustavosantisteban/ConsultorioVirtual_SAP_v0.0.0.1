@@ -97,7 +97,14 @@ namespace SeguridadWebv2.Models
         public DbSet<Relacion> RelacionPacienteEspecialista { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<FileSharedRelacion> FileSharedRelacion { get; set; }
-
+        public DbSet<HistoriaClinica> HistoriaClinica { get; set; }
+        public DbSet<AnamnesisCardiovascular> AnamnesisCardiovascular { get; set; }
+        public DbSet<AnamnesisDisgestiva> AnamnesisDisgestiva { get; set; }
+        public DbSet<AnamnesisRespiratoria> AnamnesisRespiratoria { get; set; }
+        public DbSet<Patologia> Patologia { get; set; }
+        public DbSet<VidaSocial> VidaSocial { get; set; }
+        public DbSet<FichaMedica> FichaMedica { get; set; }
+        public DbSet<MotivoConsulta> MotivoConsulta { get; set; }
         // Override OnModelsCreating:
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
