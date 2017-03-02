@@ -109,20 +109,30 @@ namespace SeguridadWebv2.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Turnos(string id, DateTime? dato)
+        public ActionResult Turnos(string id, string dato)
         {
+            IEnumerable<HorarioDisponible> horariodisponible;
+            Especialista espec = db.Especialistas.FirstOrDefault(x => x.Id == id);
+            DateTime date;
             if (dato == null)
             {
-                DateTime date = Convert.ToDateTime(DateTime.Now);
+                 date = Convert.ToDateTime(DateTime.Now);
+                
+                horariodisponible = (from horariosdisp in db.HorariosDisponibles
+                                    join horarios in db.Horarios on horariosdisp.HorarioId equals horarios.IDHorario
+                                    join especi in db.Especialistas on horarios.EspecialistaId equals especi.Id
+                                    where horarios.EspecialistaId == id && DbFunctions.TruncateTime(horariosdisp.Dia) >= date.Date && horariosdisp.Disponible == EstadoHorario.Disponible
+                                    select horariosdisp).ToList();
             }
-            Especialista espec = db.Especialistas.FirstOrDefault(x => x.Id == id);
-            
-            IEnumerable<HorarioDisponible> horariodisponible = (from horariosdisp in db.HorariosDisponibles
-                                                    join horarios in db.Horarios on horariosdisp.HorarioId equals horarios.IDHorario
-                                                    join especi in db.Especialistas on horarios.EspecialistaId equals especi.Id
-                                                    where horarios.EspecialistaId == id && horariosdisp.Disponible == EstadoHorario.Disponible
-                                                    select horariosdisp).ToList();
-
+            else
+            {
+                 date = Convert.ToDateTime(dato);
+                 horariodisponible = (from horariosdisp in db.HorariosDisponibles
+                                     join horarios in db.Horarios on horariosdisp.HorarioId equals horarios.IDHorario
+                                     join especi in db.Especialistas on horarios.EspecialistaId equals especi.Id
+                                     where horarios.EspecialistaId == id && DbFunctions.TruncateTime(horariosdisp.Dia) >= date && horariosdisp.Disponible == EstadoHorario.Disponible
+                                     select horariosdisp).ToList();
+            }
             var model = new GeneralViewModels
             {
                 Especialista = espec,
@@ -130,8 +140,6 @@ namespace SeguridadWebv2.Controllers
             };
             return View(model);
         }
-
-
         //[HttpGet]
         //public JsonResult SearchtoDateTurno(string id, DateTime dato)
         //{

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace SeguridadWebv2.Models.Aplicacion
 {
+    [Table("HistoriaClinica")]
     public class HistoriaClinica
     {
         public HistoriaClinica()
@@ -14,9 +16,8 @@ namespace SeguridadWebv2.Models.Aplicacion
         }
         [Key]
         public string IdHistoriaClinica { get; set; }
-        public List<Anamnesis> FichaMedica { get; set; }
         public DateTime FechaCreacion { get; set; }
-
-        public virtual Paciente Paciente { get; set; }
+        public virtual List<Anamnesis> Anamnesis { get; set; }
+        public virtual List<Paciente> Pacientes { get; set; }
     }
 }

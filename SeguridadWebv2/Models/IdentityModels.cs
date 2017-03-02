@@ -103,8 +103,10 @@ namespace SeguridadWebv2.Models
         public DbSet<AnamnesisRespiratoria> AnamnesisRespiratoria { get; set; }
         public DbSet<Patologia> Patologia { get; set; }
         public DbSet<VidaSocial> VidaSocial { get; set; }
-        public DbSet<FichaMedica> FichaMedica { get; set; }
+        //public DbSet<FichaMedica> FichaMedica { get; set; }
         public DbSet<MotivoConsulta> MotivoConsulta { get; set; }
+        public DbSet<OrdenTurno> OrdenTurnos { get; set; }
+        public DbSet<OrdenItem> OrdenItems { get; set; }
         // Override OnModelsCreating:
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

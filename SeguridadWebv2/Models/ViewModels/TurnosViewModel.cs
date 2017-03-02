@@ -1,15 +1,21 @@
 ﻿using SeguridadWebv2.Models.Aplicacion;
 using System;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace SeguridadWebv2.Models.ViewModels
 {
     public class TurnosViewModel
     {
         public string IdTurno { get; set; }
-        public DateTime Dia { get; set; }
-        public DateTime HoraInicio { get; set; }
-        public DateTime HoraFin { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime? Dia { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:hh:mm}")]
+        public DateTime? HoraInicio { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:hh:mm}")]
+        public DateTime? HoraFin { get; set; }
         public Estado EstadoTurno { get; set; }
         public string RelacionId { get; set; }
         public decimal Precio { get; set; }

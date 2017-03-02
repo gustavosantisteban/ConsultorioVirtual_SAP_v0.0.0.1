@@ -19,9 +19,11 @@ namespace SeguridadWebv2.Models.Aplicacion
         public Sexo Genero { get; set; }
         public string Direccion { get; set; }
         public string IdObraSocial { get; set; }
-
+        public string IdHistoriaClinica { get; set; }
         [ForeignKey("IdObraSocial")]
         public virtual ObraSocial ObraSocial { get; set; }
+        [ForeignKey("IdHistoriaClinica")]
+        public virtual HistoriaClinica HistoriaClinica { get; set; }
         public virtual ICollection<Relacion> RelacionPaciente { get; set; }
         public virtual ICollection<Analisis> Analisis { get; set; }
     }

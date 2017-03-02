@@ -311,7 +311,11 @@ namespace SeguridadWebv2.Models
                         EmailConfirmed = true,
                         ImagenPaciente = "~/Content/img/medicos/pamela_sosa.jpg",
                         FechadeCumpleanos = Convert.ToDateTime("1990-12-12 00:00"),
-                        Genero = Sexo.Femenino
+                        Genero = Sexo.Femenino,
+                        HistoriaClinica = new HistoriaClinica {
+                            Anamnesis = null,
+                            FechaCreacion = DateTime.Now
+                        }
                     };
                 var resultadoesp = userManager.Create(paciente, passwordpac);
                 resultadoesp = userManager.SetLockoutEnabled(paciente.Id, false);

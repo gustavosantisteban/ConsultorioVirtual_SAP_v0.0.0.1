@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using OpenTokSDK;
+using SeguridadWebv2.Helpers;
 using SeguridadWebv2.Models;
 using SeguridadWebv2.Models.Aplicacion;
 using SeguridadWebv2.Models.ViewModels;
@@ -10,9 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -24,7 +27,10 @@ namespace SeguridadWebv2.Controllers
     {
         ApplicationDbContext db = new ApplicationDbContext();
         // GET: VideoConferencia
-        public ActionResult Iniciar(string id)
+        //[AsyncTimeout(2000)]
+        //[HandleError(ExceptionType = typeof(TimeoutException), View = "TimedOut")]
+        [SessionExpire]
+        public async Task<ActionResult> Iniciar(string id)
         {
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var usuario = User.Identity.GetUserId();
@@ -46,7 +52,6 @@ namespace SeguridadWebv2.Controllers
             };
             
             ViewBag.FechaFin = (turno.HoraFin - DateTime.Now);
-
 
             //https://github.com/aoberoi/OpenTok-DotNet-Sample/blob/master/OpenTokSample/Web.config
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
@@ -181,7 +186,7 @@ namespace SeguridadWebv2.Controllers
         [HttpPost]
         public ActionResult UploadFilesSharedPaciente(FilesSharedViewModel vm)
         {
-            vm.IdFile = "fcc6d9bc-7a3b-45fe-b9d3-39539c573305";
+            vm.IdFile = "bf53298a-dd2a-4b6c-83be-56f6a4e7be76";
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var usuario = User.Identity.GetUserId();
             if (usuario == null)
@@ -265,9 +270,17 @@ namespace SeguridadWebv2.Controllers
             if (rol.Contains("Paciente"))
             {
                 var result = db.FileSharedRelacion.Include("File").Where(x => x.IdRelacion == resultado.IdRelacion).FirstOrDefault();
-                Models.Aplicacion.File ok = result.File;
-                ok.FullPath = ok.FullPath.Replace(@"\\", @"\");
-                return PartialView("~/Views/VideoConferencia/_UploadFiles.cshtml", ok);
+                if (result != null)
+                {
+                    Models.Aplicacion.File ok = result.File;
+                    ok.FullPath = ok.FullPath.Replace(@"\\", @"\");
+                    return Json(new { Url = Url.Action("ShowData", ok) });
+
+                    //return PartialView("~/Views/VideoConferencia/_UploadFiles.cshtml", ok);
+                } else
+                {
+                    return null;
+                }
             }
             if (rol.Contains("Paciente"))
             {
@@ -277,6 +290,53 @@ namespace SeguridadWebv2.Controllers
                 return PartialView("~/Views/VideoConferencia/_UploadFiles.cshtml", result.File);
             }
             return null;
+        }
+
+        public ActionResult ShowData()
+        {
+            return PartialView("~/Views/VideoConferencia/_UploadFiles.cshtml");
+        }
+
+        [HttpGet]
+        public ActionResult PartialCreateAmenite(string amenite)
+        {
+            switch(amenite)
+            {
+                case "0":
+                    AnamnesisCardiovascular cardio = new AnamnesisCardiovascular()
+                    {
+                        Fecha = DateTime.Now,
+                        PatologiaCardiovascular = null,
+                    };
+                    return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
+                case "1":
+                    AnamnesisDisgestiva digestiva = new AnamnesisDisgestiva()
+                    {
+                        Fecha = DateTime.Now,
+                        PatologiaDigestiva = null,
+                    };
+                    return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
+                case "2":
+                    AnamnesisRespiratoria respi = new AnamnesisRespiratoria()
+                    {
+                        Fecha = DateTime.Now,
+                        PatologiaRespiratoria = null,
+                    };
+                    return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
+            };
+            return PartialView();
+        }
+
+        [HttpGet]
+        public ActionResult PartialCreatePatologia(string id)
+        {
+            Patologia cardio = new Patologia()
+            {
+               Motivo = "",
+               Descripcion = "",
+               ValidarMotivo = false,        
+             };
+            return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml", cardio);
         }
     }
 }

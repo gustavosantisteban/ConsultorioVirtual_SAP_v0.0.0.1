@@ -6,239 +6,302 @@
     Layout = "~/Views/Shared/_LayoutVideoConf.cshtml";
 }
 
-@Model.Dia
+    @if (Request.IsAuthenticated)
+    {
+        <body data-bind="attr: { 'data-mode': Mode }">
 
-@*<body data-bind="attr: { 'data-mode': Mode }">
-    <!-- Invalid browser alert, and reminder to enable media things -->
-    <div class="container-fluid">
-        <div class="row-fluid instructions">
-            <div class="span12">
-                <div class="alert"><h4>Precaución!</h4> Su navegador le pedirá que active la camara web y el microfono.  <strong>Importante: Este sitio no podrá funcionar hasta que proporcione dicho acceso</strong>.</div>
-            </div>
-        </div>
-        <div class="row-fluid browser-warning">
-            <div class="span12">
-                <div class="alert alert-error"><h4>Lo sentimos su navegador no soporta WebRTC.</h4> Te recomendamos usar <a href="https://nightly.mozilla.org/">Firefox en su ultima versión</a>, o <a href="https://www.google.com/intl/en/chrome/browser/beta.html">Google Chrome Beta</a> para unirte a la videoconferencia.</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Top Bar -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="brand pull-left" href="#">Consultorio Virtual</a>
-                <span class="loading-indicator icon-spinner-3" data-bind="css: { on: Loading }"></span>
-                <div class="nav-collapse collapse">
-                    <p class="navbar-text pull-right">
-                        You are <span data-bind="text: Username"></span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- App Area -->
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <!-- Side Bar -->
-            <div class="span3">
-                <!-- In Call Actions -->
-                <div class="well actions">
-                    <div class="status" data-bind="text: CallStatus"></div>
-                    <button class="btn btn-danger hangup">Finalizar</button>
-                </div>
-                <!-- User List -->
-                <div class="well user-list">
-                    <ul class="nav nav-list">
-                        <li class="nav-header">Usuarios en Linea<small data-bind="text: Users().length"></small></li>
-                        <!-- ko foreach: Users -->
-                        <li class="user" data-bind="attr: { 'data-cid': ConnectionId, 'title': Username }">
-                            <a href="#">
-                                <!-- only using an a here for bootstrap styling -->
-                                <div class="username" data-bind="text: Username"></div>
-                                <div class="helper" data-bind="css: $parent.getUserStatus($data)"></div>
-                            </a>
-                        </li>
-                        <!-- /ko -->
-                    </ul>
-                </div>*@
-
-<div class="container-fluid">
-    <div class="row-fluid">
-        <!-- Side Bar -->
-        <div class="span3">
-            <div class="jumbotron">
-                <h1>Subir Archivos</h1>
-                <div class="jumbotron">
-                    <form action="~/VideoConferencia/SubirArchivosConsulta" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-                        <div class="fallback">
-                            <input name="file" type="file" multiple />
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <!-- Invalid browser alert, and reminder to enable media things -->
+                    <div class="container">
+                        <div class="row-fluid instructions">
+                            <div class="span12">
+                                <div class="alert"><h4>Precaución!</h4> Su navegador le pedirá que active la camara web y el microfono.  <strong>Importante: Este sitio no podrá funcionar hasta que proporcione dicho acceso</strong>.</div>
+                            </div>
                         </div>
-                    </form>
-                </div>
-            </div>
+                        <div class="row-fluid browser-warning">
+                            <div class="span12">
+                                <div class="alert alert-error"><h4>Lo sentimos su navegador no soporta WebRTC.</h4> Te recomendamos usar <a href="https://nightly.mozilla.org/">Firefox en su ultima versión</a>, o <a href="https://www.google.com/intl/en/chrome/browser/beta.html">Google Chrome Beta</a> para unirte a la videoconferencia.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Top Bar -->
+                    <div class="navbar navbar-inverse navbar-fixed-top">
+                        <div class="navbar-inner">
+                            <div class="container-fluid">
+                                <a class="brand pull-left" href="#">Consultorio Virtual</a>
+                                <span class="loading-indicator icon-spinner-3" data-bind="css: { on: Loading }"></span>
+                                <div class="nav-collapse collapse">
+                                    <p class="navbar-text pull-right">
+                                        You are <span data-bind="text: Username"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- App Area -->
+                    <!-- Side Bar -->
+                    <!-- In Call Actions -->
+                    <div class="well actions">
+                        <div class="status" data-bind="text: CallStatus"></div>
+                        <button class="btn btn-danger hangup">Finalizar</button>
+                    </div>
+                    <!-- User List -->
+                    <div class="well user-list">
+                        <ul class="nav nav-list">
+                            <li class="nav-header">Usuarios en Linea<small data-bind="text: Users().length"></small></li>
+                            <!-- ko foreach: Users -->
+                            <li class="user" data-bind="attr: { 'data-cid': ConnectionId, 'title': Username }">
+                                <a href="#">
+                                    <!-- only using an a here for bootstrap styling -->
+                                    <div class="username" data-bind="text: Username"></div>
+                                    <div class="helper" data-bind="css: $parent.getUserStatus($data)"></div>
+                                </a>
+                            </li>
+                            <!-- /ko -->
+                        </ul>
+                    </div>
 
-            <div id="renderimages">
-                <button id="getarchivoscompartidos" class="btn btn-success">Mostrar Archivos</button>
-            </div>
-        </div>
-        
-        <!-- Videos -->
-        <div class="span9">
-            @*<div class="row-fluid">
-                <div class="span6">
-                    <h4>Usuario</h4>
-                    <video class="video mine cool-background" autoplay="autoplay"></video>
-                </div>
-                <div class="span6">
-                    <h4>Especialista</h4>
-                    <video class="video partner cool-background" autoplay="autoplay"></video>
-                </div>
-            </div>*@
-        </div>
-    </div>
-
-    @Html.HiddenFor(model => model.Especialista.Id)
-    @Html.HiddenFor(model => model.Paciente.Id)
-    @Html.HiddenFor(model => model.RelacionId)
-    <!-- Footer -->
-    <hr>
-</div>
-
-@*<div class="wrapper">
-        <div class="cell">
-            <div id="holder">
-                <div class="digits"></div>
-            </div>
-        </div>
-    </div>
-    </body>
-    *@
-@section Scripts {
-    @Scripts.Render("~/bundles/signalr")
-    @Scripts.Render("~/signalr/hubs")
-    <script type="text/javascript">
-
-        function FilesSharedViewModel() {
-            var IdFileSharedRelacion = "";
-            var Fecha = "";
-            var Estado = true;
-            var Success = true;
-            var FromUser = 0;
-            var ToUser = 0;
-            var IdFile = 0;
-            var IdRelacion = 0;
-        };
-
-        Dropzone.options.dropzoneForm = {
-            maxFiles: 50,
-            init: function () {
-                this.on("maxfilesexceeded", function (data) {
-                    var res = eval('(' + data.xhr.responseText + ')');
-                });
-                this.on("success", function (file, archivo) {
-                    
-                    if (archivo != null) {
-                        //console.log(archivo.IdFile);
-                        //console.log(archivo.FullPath);
-                        //console.log(archivo.Data.IdFile);
-                        //console.log(archivo.Data.FullPath);
-
-                        //$.each(archivo, function (i, val) {
-                        //        console.log(archivo[i].IdFile);
-                        //});
-                        //console.log(responseText);
-
-                        console.log(archivo);
-                        var resultado = JSON.stringify(archivo, ['IdFile']);
-                        console.log(resultado);
+                    @if (User.IsInRole("AllPaciente") || User.IsInRole("Paciente"))
+                    {
+                            <!-- Side Bar -->
+                        <div class="jumbotron">
+                            <h1>Subir Archivos</h1>
+                            <div class="jumbotron">
+                                <form action="~/VideoConferencia/SubirArchivosConsulta" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+                                    <div class="fallback">
+                                        <input name="file" type="file" multiple />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="renderimages">
+                            <button id="getarchivoscompartidos" class="btn btn-success">Mostrar Archivos</button>
+                        </div>
                     }
-                    //var response = jQuery.parseJSON(archivo);
-                    //console.log(response);
+                    else if (User.IsInRole("AllProfesionales") || User.IsInRole("Profesionales") || User.IsInRole("Profesional"))
+                    {
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                            <span class="glyphicon glyphicon-file">
+                                            </span>Agregar Anamesis
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <select class="form-control optionanamnesis">
+                                                <option value="0">Anamnesis Cardiovascular</option>
+                                                <option value="1">Anamnesis Digestiva</option>
+                                                <option value="2">Anamnesis Respiratoria</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="renderimages">
+                            <button id="getarchivoscompartidos" class="btn btn-success">Mostrar Archivos Compartidos</button>
+                        </div>
+                    }
+
+                    @*<div class="jumbotron">
+                <form action="~/VideoConferencia/SubirArchivosConsulta" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneCompartidoForm">
+                    <div class="fallback">
+                        <input name="file" type="file" multiple />
+                    </div>
+                </form>
+            </div>*@
+                </div>
+                <!-- Videos -->
+                <div class="col-md-8">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <h4>Usuario</h4>
+                            <video class="video mine cool-background" autoplay="autoplay"></video>
+                        </div>
+                        <div class="span6">
+                            <h4>Especialista</h4>
+                            <video class="video partner cool-background" autoplay="autoplay"></video>
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.Especialista.Id)
+                @Html.HiddenFor(model => model.Paciente.Id)
+                @Html.HiddenFor(model => model.RelacionId)
+                <!-- Footer -->
+                <hr>
+            </div>
+
+        </body>
+    }
+    @*<div class="wrapper">
+            <div class="cell">
+                <div id="holder">
+                    <div class="digits"></div>
+                </div>
+            </div>
+        </div>
+        </body>
+    *@
+    @section Scripts {
+        @Scripts.Render("~/bundles/signalr")
+        @Scripts.Render("~/signalr/hubs")
+        <script type="text/javascript">
+
+            $('.optionanamnesis').on('change', function () {
+                var ok = $(this).val();
+                console.log(ok);
+                $.ajax({
+                    type: "GET",
+                    url: "/VideoConferencia/PartialCreateAmenite",
+                    data: { amenite: $(this).val() },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        $('#renderimages').html(data);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        alert(textStatus);
+                    }
                 });
+            });
 
+            function FilesSharedViewModel() {
+                var IdFileSharedRelacion = "";
+                var Fecha = "";
+                var Estado = true;
+                var Success = true;
+                var FromUser = 0;
+                var ToUser = 0;
+                var IdFile = 0;
+                var IdRelacion = 0;
+            };
 
-                this.on("addedfile", function (file) {
-                    // Create the remove button
+            Dropzone.options.dropzoneForm = {
+                maxFiles: 50,
+                init: function () {
+                    this.on("maxfilesexceeded", function (data) {
+                        var res = eval('(' + data.xhr.responseText + ')');
+                    });
+                    this.on("success", function (file, archivo) {
 
-                    var removeButton = Dropzone.createElement("<a class='btn btn-danger'><i class='fa fa-trash-o' aria-hidden='true'></i>Eliminar</a>");
-                    var compartirarchivo = Dropzone.createElement("<a class='btn btn-primary'><i class='fa fa-share' aria-hidden='true'></i>Compartir</a>");
+                        if (archivo != null) {
 
-                    // Capture the Dropzone instance as closure.
-                    var _this = this;
-
-                    // Listen to the click event
-                    removeButton.addEventListener("click", function (e) {
-                        // Make sure the button click doesn't submit the form:
-                        e.preventDefault();
-                        e.stopPropagation();
-                        // Remove the file preview.
-                        _this.removeFile(file);
-                        // If you want to the delete the file on the server as well,
-                        // you can do the AJAX request here.
+                            console.log(archivo);
+                            var resultado = JSON.stringify(archivo, ['IdFile']);
+                            console.log(resultado);
+                        }
+                        //var response = jQuery.parseJSON(archivo);
+                        //console.log(response);
                     });
 
-                    compartirarchivo.addEventListener("click", function (e) {
-                        // Make sure the button click doesn't submit the form:
-                        e.preventDefault();
-                        e.stopPropagation();
-                        // Remove the file preview.
-                        // If you want to the delete the file on the server as well,
-                        // you can do the AJAX request here.
-                        var vm = new FilesSharedViewModel();
-                        vm.IdRelacion = $('#RelacionId').val(),
-                        vm.IdFileSharedRelacion = "";
-                        vm.Fecha = "";
-                        vm.Estado = true;
-                        vm.Success = true;
-                        vm.FromUser = $('#Paciente_Id').val(),
-                        vm.ToUser = $('#Especialista_Id').val(),
-                        vm.IdFile = 1;
-                        
+
+                    this.on("addedfile", function (file) {
+                        // Create the remove button
+
+                        var removeButton = Dropzone.createElement("<a class='btn btn-danger'><i class='fa fa-trash-o' aria-hidden='true'></i>Eliminar</a>");
+                        var compartirarchivo = Dropzone.createElement("<a class='btn btn-primary'><i class='fa fa-share' aria-hidden='true'></i>Compartir</a>");
+
+                        // Capture the Dropzone instance as closure.
+                        var _this = this;
+
+                        // Listen to the click event
+                        removeButton.addEventListener("click", function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Remove the file preview.
+                            _this.removeFile(file);
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+
+                        compartirarchivo.addEventListener("click", function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Remove the file preview.
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                            var vm = new FilesSharedViewModel();
+                            vm.IdRelacion = $('#RelacionId').val(),
+                            vm.IdFileSharedRelacion = "";
+                            vm.Fecha = "";
+                            vm.Estado = true;
+                            vm.Success = true;
+                            vm.FromUser = $('#Paciente_Id').val(),
+                            vm.ToUser = $('#Especialista_Id').val(),
+                            vm.IdFile = 1;
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/VideoConferencia/UploadFilesSharedPaciente",
+                                dataType: "json",
+                                data: vm,
+                                success: function (d) {
+                                    if (d.success == true)
+                                        //window.location = "index.html";
+                                        //console.log(data);
+                                        console.log(d.archivo);
+                                    else { }
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    // TODO: Show error
+                                }
+                            });
+                        });
+                        // Add the button to the file preview element.
+                        file.previewElement.appendChild(removeButton);
+                        file.previewElement.appendChild(compartirarchivo);
+                    });
+
+                    this.on("complete", function (file) {
+                        //if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                        //    var id = $('#RelacionId').val();
+                        //    $.ajax({
+                        //        type: "GET",
+                        //        url: "/VideoConferencia/MisArchivosCompartidos",
+                        //        data: id,
+                        //        success: function (d) {
+                        //            if (d.success == true)
+                        //                console.log(d);
+                        //            else { }
+                        //        },
+                        //        error: function (xhr, textStatus, errorThrown) {
+                        //            // TODO: Show error
+                        //        }
+                        //    });
+                        //}
+                    });
+
+                    //this.on("queuecomplete", function (file) {
+                    //}
+                    $('#getarchivoscompartidos').on('click', function () {
                         $.ajax({
-                            type: "POST",
-                            url: "/VideoConferencia/UploadFilesSharedPaciente",
+                            type: "GET",
+                            url: "/VideoConferencia/MisArchivosCompartidos",
+                            data: { id: $('#RelacionId').val() },
                             dataType: "json",
-                            data: vm,
-                            success: function (d) {
-                                if (d.success == true)
-                                    //window.location = "index.html";
-                                    //console.log(data);
-                                    console.log(d.archivo);
-                                else { }
+                            success: function (data) {
+                                console.log(data);
+                                $('#renderimages').html(data);
                             },
                             error: function (xhr, textStatus, errorThrown) {
-                                // TODO: Show error
+                                alert(textStatus);
                             }
                         });
                     });
-                    // Add the button to the file preview element.
-                    file.previewElement.appendChild(removeButton);
-                    file.previewElement.appendChild(compartirarchivo);
-                });
-                
-                this.on("complete", function (file) {
-                    //if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-                    //    var id = $('#RelacionId').val();
-                    //    $.ajax({
-                    //        type: "GET",
-                    //        url: "/VideoConferencia/MisArchivosCompartidos",
-                    //        data: id,
-                    //        success: function (d) {
-                    //            if (d.success == true)
-                    //                console.log(d);
-                    //            else { }
-                    //        },
-                    //        error: function (xhr, textStatus, errorThrown) {
-                    //            // TODO: Show error
-                    //        }
-                    //    });
-                    //}
-                });
-                
-                //this.on("queuecomplete", function (file) {
-                //}
-                $('#getarchivoscompartidos').on('click', function() { 
+                }
+            };
+
+            Dropzone.options.dropzoneCompartidoForm = {
+                init: function () {
+                    var thisDropzone = this;
                     $.ajax({
                         type: "GET",
                         url: "/VideoConferencia/MisArchivosCompartidos",
@@ -246,82 +309,78 @@
                         dataType: "json",
                         success: function (data) {
                             console.log(data);
-                            $('#renderimages').html(data);
-                            //if (archivo.Data != '') {
-                            //    $.each(archivo.Data, function (index, item) {
-                            //        //// Create the mock file:
-                            //        var mockFile = {
-                            //            name: item.AttachmentID,
-                            //            size: 12345
-                            //        };
+                            $.each(data.Data, function (index, item) {
+                                //// Create the mock file:
+                                var mockFile = {
+                                    name: item.AttachmentID,
+                                    size: 12345
+                                };
 
-                            //        // Call the default addedfile event handler
-                            //        thisDropzone.emit("addedfile", mockFile);
+                                // Call the default addedfile event handler
+                                thisDropzone.emit("addedfile", mockFile);
 
-                            //        // And optionally show the thumbnail of the file:
-                            //        thisDropzone.emit("thumbnail", mockFile, item.Path);
+                                // And optionally show the thumbnail of the file:
+                                thisDropzone.emit("thumbnail", mockFile, item.Path);
 
-                            //        // If you use the maxFiles option, make sure you adjust it to the
-                            //        // correct amount:
-                            //        //var existingFileCount = 1; // The number of files already uploaded
-                            //        //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
-                            //    });
-                            //}
+                                // If you use the maxFiles option, make sure you adjust it to the
+                                // correct amount:
+                                //var existingFileCount = 1; // The number of files already uploaded
+                                //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+                            });
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             alert(textStatus);
                         }
                     });
+                }
+            };
+        </script>
+    }
+
+    @*<script>*@
+    @*$(function(){
+          $(".digits").countdown({
+            image: "/Content/img/countdown/digits.png",
+            format: "hh:mm:ss",
+            endTime: '@ViewBag.FechaFin'
+          });
+        });*@
+    @*</script>*@
+
+
+    @*<body>
+            <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
+            <script charset="utf-8">
+              var apiKey = '45760492';
+              var sessionId = '2_MX40NTc2MDQ5Mn5-MTQ4NTk5MTkwMDY4NH5lNCsrU1d5eW54QTBRbTdXTnVHYVYrY1J-fg';
+              var token = 'YOUR-TOKEN';
+              var session = OT.initSession(apiKey, sessionId)
+                .on('streamCreated', function(event) {
+                  session.subscribe(event.stream);
+                })
+                .connect(token, function(error) {
+                  var publisher = OT.initPublisher();
+                  session.publish(publisher);
                 });
-            }
-        };
-    </script>
-}
+            </script>
+        </body>*@
 
-@*<script>*@
-@*$(function(){
-      $(".digits").countdown({
-        image: "/Content/img/countdown/digits.png",
-        format: "hh:mm:ss",
-        endTime: '@ViewBag.FechaFin'
-      });
-    });*@
-@*</script>*@
-
-
-@*<body>
-        <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
-        <script charset="utf-8">
-          var apiKey = '45760492';
-          var sessionId = '2_MX40NTc2MDQ5Mn5-MTQ4NTk5MTkwMDY4NH5lNCsrU1d5eW54QTBRbTdXTnVHYVYrY1J-fg';
-          var token = 'YOUR-TOKEN';
-          var session = OT.initSession(apiKey, sessionId)
-            .on('streamCreated', function(event) {
-              session.subscribe(event.stream);
-            })
-            .connect(token, function(error) {
-              var publisher = OT.initPublisher();
-              session.publish(publisher);
-            });
-        </script>
-    </body>*@
-
-@*<!doctype html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>OpenTok Hello World</title>
-        <script src="//static.opentok.com/v2/js/opentok.min.js"></script>
-        <script type="text/javascript">
-            var apiKey = '@ViewBag.ApiKey';
-            var sessionId = '@ViewBag.SessionId';
-            var token = '@ViewBag.Token';
-        </script>
-        <script src="~/Scripts/opentokinit.js"></script>
-    </head>
-    <body>
-        <h2>Hello, World!</h2>
-        <div id="publisher"></div>
-        <div id="subscribers"></div>
-    </body>
-    </html>*@
+    @*<!doctype html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <title>OpenTok Hello World</title>
+            <script src="//static.opentok.com/v2/js/opentok.min.js"></script>
+            <script type="text/javascript">
+                var apiKey = '@ViewBag.ApiKey';
+                var sessionId = '@ViewBag.SessionId';
+                var token = '@ViewBag.Token';
+            </script>
+            <script src="~/Scripts/opentokinit.js"></script>
+        </head>
+        <body>
+            <h2>Hello, World!</h2>
+            <div id="publisher"></div>
+            <div id="subscribers"></div>
+        </body>
+        </html>*@

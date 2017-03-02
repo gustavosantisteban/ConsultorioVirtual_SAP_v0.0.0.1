@@ -141,9 +141,46 @@
                 </div>
             </div>
         }
+
+    <div class="container body-content">
+        <h3>O Page por Mercado Libre</h3>
+        <button name="MP-Checkout" class="orange-ar-m-sq-arall" id="btnCO" style="margin-top: 20px;" onclick="_doCheckout()"><i class="glyphicon glyphicon-credit-card"></i>Pago</button>
+        @*<a href="@{ }" name="MP-Checkout" class="orange-ar-m-sq-arall">Pay</a>*@
+        <script type="text/javascript" src="//resources.mlstatic.com/mptools/render.js"></script>
+    </div>
 </div>
 
 @section Scripts {
    @Scripts.Render("~/bundles/jqueryval")
 }
+<script src="~/Scripts/jquery-3.1.1.js"></script>
 
+<script>
+        function _doCheckout() {
+            //$.post("/MercadoPago/DoCheckout", { data: { id : $('.idesp').val() }}, function (response) {
+            //    console.log(response);
+            //    document.location.href = response.url;
+            //});
+
+            //var id = $('.idesp').val();
+            $.ajax({
+                type: "POST",
+                url: "/MercadoPago/DoCheckout",
+                data: { 'data': $('.idesp').val() },
+                success: function (response) {
+                    console.log(response);
+                    document.location.href = response.url;
+                },
+            });
+        }
+
+        $('#mp').on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: "/APIMercadoPago/MercadoPago",
+                dataType: "json",
+                success: function (data) {
+                }
+            });
+        });
+</script>

@@ -16,7 +16,7 @@ namespace SeguridadWebv2.Models.Aplicacion
         [Key]
         public string IdAnamnesis { get; set; }
         public DateTime Fecha { get; set; }
-        public List<MotivoConsulta> MotivoConsulta { get; set; }
-        public List<VidaSocial> VidaSocial { get; set; }
+        //public List<MotivoConsulta> MotivoConsulta { get; set; }
+        //public List<VidaSocial> VidaSocial { get; set; }
     }
 }

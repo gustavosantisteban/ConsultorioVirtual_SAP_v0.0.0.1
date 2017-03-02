@@ -23,6 +23,11 @@ namespace SeguridadWebv2.Controllers
             return View();
         }
 
+        public ActionResult Status()
+        {
+            return View();
+        }
+
         [HttpGet]
         [Authorize]
         public ActionResult ReservarTurno(string id, string espec)
