@@ -177,3 +177,34 @@
             }).hide();
         });
 </script>
+
+<!--VideoConferenciaController-->
+
+@*private OpenTok opentok = new OpenTok(Convert.ToInt32(ConfigurationManager.AppSettings["opentok_key"]),
+                                        ConfigurationManager.AppSettings["opentok_secret"]);
+
+      try
+                {
+                    string sessionId = GetSessionId(HttpContext.ApplicationInstance.Application);
+                    ViewBag.apikey = opentok.ApiKey;
+                    ViewBag.sessionId = sessionId;
+                    ViewBag.token = opentok.GenerateToken(sessionId);
+                }
+                catch (OpenTokException)
+                {
+                    ViewBag.errorMessage = "Could not generate token";
+                }
+
+    private string GetSessionId(HttpApplicationState Application)
+            {
+
+                if (Application["sessionId"] == null)
+                {
+                    Application.Lock();
+                    Application["sessionId"] = opentok.CreateSession().Id;
+                    Application.UnLock();
+                }
+                return (string)Application["sessionId"];
+
+            }
+*@
