@@ -8,10 +8,8 @@ using System.Web;
 namespace SeguridadWebv2.Models.Aplicacion
 {
     [Table("Turnos")]
-    public class Turno : IObserver<HorarioDisponible>
+    public class Turno
     {
-        private IDisposable unsubscriber;
-        private int intState;
         public Turno()
         {
             this.IdTurno = Guid.NewGuid().ToString();
@@ -28,37 +26,6 @@ namespace SeguridadWebv2.Models.Aplicacion
 
         [ForeignKey("RelacionId")]
         public virtual Relacion RelacionPacienteEspecialista { get; set; }
-
-        public Turno(int state)
-        {
-            this.intState = state;
-        }
-
-        public int State
-        {
-            get { return this.intState; }
-        }
-
-        public virtual void Suscribe(IObservable<HorarioDisponible> provider)
-        {
-            if (provider != null)
-                unsubscriber = provider.Subscribe(this);
-        }
-
-        public void OnNext(HorarioDisponible value)
-        {
-            string id = value.Disponible.ToString();
-        }
-
-        public void OnError(Exception error)
-        {
-            unsubscriber.Dispose();
-        }
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public enum Estado
