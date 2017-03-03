@@ -3,22 +3,19 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using OpenTokSDK;
+using OpenTokSDK.Exception;
 using SeguridadWebv2.Helpers;
 using SeguridadWebv2.Models;
 using SeguridadWebv2.Models.Aplicacion;
 using SeguridadWebv2.Models.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
-using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace SeguridadWebv2.Controllers
 {
@@ -26,6 +23,8 @@ namespace SeguridadWebv2.Controllers
     public class VideoConferenciaController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        private OpenTok opentok = new OpenTok(Convert.ToInt32(ConfigurationManager.AppSettings["opentok_key"]),
+                                        ConfigurationManager.AppSettings["opentok_secret"]);
         // GET: VideoConferencia
         //[AsyncTimeout(2000)]
         //[HandleError(ExceptionType = typeof(TimeoutException), View = "TimedOut")]
@@ -53,10 +52,22 @@ namespace SeguridadWebv2.Controllers
             
             ViewBag.FechaFin = (turno.HoraFin - DateTime.Now);
 
-            //https://github.com/aoberoi/OpenTok-DotNet-Sample/blob/master/OpenTokSample/Web.config
-            NameValueCollection appSettings = ConfigurationManager.AppSettings;
-            ViewBag.APIKey = appSettings["opentok_key"];
-            ViewBag.ApiSecret = appSettings["api_secret"];
+            try
+            {
+                string sessionId = GetSessionId(HttpContext.ApplicationInstance.Application);
+                ViewBag.apikey = opentok.ApiKey;
+                ViewBag.sessionId = sessionId;
+                ViewBag.token = opentok.GenerateToken(sessionId);
+            }
+            catch (OpenTokException)
+            {
+                ViewBag.errorMessage = "No se puedo generar el token";
+            }
+
+            ////https://github.com/aoberoi/OpenTok-DotNet-Sample/blob/master/OpenTokSample/Web.config
+            //NameValueCollection appSettings = ConfigurationManager.AppSettings;
+            //ViewBag.APIKey = appSettings["opentok_key"];
+            //ViewBag.ApiSecret = appSettings["api_secret"];
             //OpenTok opentok = new OpenTok();
 
             //string sessionId = opentok.CreateSession(Request.ServerVariables["REMOTE_ADDR"]);
@@ -67,6 +78,19 @@ namespace SeguridadWebv2.Controllers
             //return View();
 
             return View(model);
+        }
+
+        private string GetSessionId(HttpApplicationState Application)
+        {
+
+            if (Application["sessionId"] == null)
+            {
+                Application.Lock();
+                Application["sessionId"] = opentok.CreateSession().Id;
+                Application.UnLock();
+            }
+            return (string)Application["sessionId"];
+
         }
 
         public ActionResult SubirArchivosConsulta()

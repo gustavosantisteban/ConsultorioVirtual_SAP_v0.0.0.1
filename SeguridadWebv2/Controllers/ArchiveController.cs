@@ -16,6 +16,7 @@ namespace SeguridadWebv2.Controllers
                                     ConfigurationManager.AppSettings["opentok_secret"]);
 
         // POST Archive/Start
+        [HttpPost]
         public string Start()
         {
             HttpApplicationState Application = HttpContext.ApplicationInstance.Application;
@@ -33,6 +34,7 @@ namespace SeguridadWebv2.Controllers
         }
 
         // POST Archive/Stop
+        [HttpPost]
         public string Stop(string id)
         {
             Archive archive;
