@@ -11,7 +11,7 @@ namespace SeguridadWebv2.Models.Aplicacion
     {
         public Paciente()
         {
-            this.RelacionPaciente = new List<Relacion>();
+            this.Turnos = new List<Turno>();
         }
 
         public string ImagenPaciente { get; set; }
@@ -24,7 +24,7 @@ namespace SeguridadWebv2.Models.Aplicacion
         public virtual ObraSocial ObraSocial { get; set; }
         [ForeignKey("IdHistoriaClinica")]
         public virtual HistoriaClinica HistoriaClinica { get; set; }
-        public virtual ICollection<Relacion> RelacionPaciente { get; set; }
+        public virtual ICollection<Turno> Turnos { get; set; }
         public virtual ICollection<Analisis> Analisis { get; set; }
     }
 

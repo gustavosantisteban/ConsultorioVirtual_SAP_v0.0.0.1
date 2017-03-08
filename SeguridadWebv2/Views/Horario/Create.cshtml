@@ -40,18 +40,25 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Dia, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.DropDownListFor(model => model.Dia, new SelectList(Enum.GetValues(typeof(SeguridadWebv2.Models.Aplicacion.DiasDelaSemana))))
+                @Html.DropDownListFor(model => model.Dia, new SelectList(Enum.GetValues(typeof(SeguridadWebv2.Models.Aplicacion.DiasDelaSemana))), new { htmlAttributes = new { @class = "form-control" } })
                 @*@Html.EditorFor(model => model.Dia, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.Dia, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
            @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6">
-            @Html.DropDownListFor(model => model.Mes, new SelectList(Enum.GetValues(typeof(SeguridadWebv2.Models.Aplicacion.MesDelAno))))
-            @*@Html.EditorFor(model => model.Dia, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.Mes, new SelectList(Enum.GetValues(typeof(SeguridadWebv2.Models.Aplicacion.MesDelAno))), new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.EditorFor(model => model.Dia, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+            </div>
         </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Precio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+            </div>
         </div>
 
         <div class="form-group">

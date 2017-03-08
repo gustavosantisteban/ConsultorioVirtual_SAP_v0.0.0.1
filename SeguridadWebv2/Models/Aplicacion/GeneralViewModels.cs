@@ -50,7 +50,6 @@ namespace SeguridadWebv2.Models.Aplicacion
 
 
         public ICollection<Turno> Turnos { get; set; }
-        public ICollection<Relacion> Relaciones { get; set; }
         public ICollection<Horario> Horarios { get; set; }
     }
 

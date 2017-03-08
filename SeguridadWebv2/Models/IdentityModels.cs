@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using SeguridadWebv2.Models.Aplicacion;
+using SeguridadWebv2.Models.ReportClass;
 
 namespace SeguridadWebv2.Models
 {
@@ -94,19 +95,18 @@ namespace SeguridadWebv2.Models
         public DbSet<Turno> Turnos { get; set; }
         public DbSet<HorarioDisponible> HorariosDisponibles { get; set; }
         public DbSet<Pregunta> Preguntas { get; set; }
-        public DbSet<Relacion> RelacionPacienteEspecialista { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<FileSharedRelacion> FileSharedRelacion { get; set; }
         public DbSet<HistoriaClinica> HistoriaClinica { get; set; }
         public DbSet<AnamnesisCardiovascular> AnamnesisCardiovascular { get; set; }
         public DbSet<AnamnesisDisgestiva> AnamnesisDisgestiva { get; set; }
         public DbSet<AnamnesisRespiratoria> AnamnesisRespiratoria { get; set; }
-        public DbSet<Patologia> Patologia { get; set; }
+        public DbSet<Consulta> Consultas { get; set; }
         public DbSet<VidaSocial> VidaSocial { get; set; }
-        //public DbSet<FichaMedica> FichaMedica { get; set; }
         public DbSet<MotivoConsulta> MotivoConsulta { get; set; }
         public DbSet<OrdenTurno> OrdenTurnos { get; set; }
         public DbSet<OrdenItem> OrdenItems { get; set; }
+        public DbSet<ReporteConsultaAnual> ReporteConsulta { get; set; }
         // Override OnModelsCreating:
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

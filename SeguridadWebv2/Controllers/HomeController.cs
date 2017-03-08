@@ -12,6 +12,8 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity.Owin;
 using SeguridadWebv2.Models;
+using SeguridadWebv2.Models.ReportClass;
+using Newtonsoft.Json;
 
 namespace SeguridadWebv2.Controllers
 {
@@ -81,7 +83,10 @@ namespace SeguridadWebv2.Controllers
                 var viewmodel = this.DashboardEspecialista(usuario);
                 return View(viewmodel);
             }
-
+            if (rol.Contains("Admin")) {
+                var viewmodel = this.DashboardAdministrator();
+                return View(viewmodel);
+            }
             return View();
         }
 
@@ -95,7 +100,6 @@ namespace SeguridadWebv2.Controllers
             }
             Especialidad id = db.Especialidades.FirstOrDefault(x => x.NombreEspecialidad.Contains(especialidad.ToUpper()));
 
-            //IQueryable<Especialista> esp = db.Especialistas.Where(x => x.Especialidad.EspecialidadId == id.EspecialidadId);
             IQueryable<Especialista> esp = db.Especialistas.Where(x => x.Especialidad.EspecialidadId.Contains(id.EspecialidadId));
 
             var viewmodel = new PreguntasEspecialistaViewModel()
@@ -113,9 +117,8 @@ namespace SeguridadWebv2.Controllers
         public DashboardPacienteVM DashboardPaciente(string PacienteID)
         {
             IEnumerable<Turno> turnospacientes = (from turnos in db.Turnos
-                                                  join relacion in db.RelacionPacienteEspecialista on turnos.RelacionId equals relacion.IdRelacion
-                                                  join paciente in db.Pacientes on relacion.Paciente.Id equals paciente.Id
-                                                  where relacion.Paciente.Id == PacienteID && turnos.EstadoTurno == Estado.Pendiente
+                                                  join paciente in db.Pacientes on turnos.Paciente.Id equals paciente.Id
+                                                  where turnos.Paciente.Id == PacienteID && turnos.EstadoTurno == Estado.Pendiente
                                                   select turnos).ToList();
 
 
@@ -125,8 +128,9 @@ namespace SeguridadWebv2.Controllers
                 Dia = b.Dia.Date,
                 HoraInicio = b.HoraInicio,
                 HoraFin = b.HoraFin,
+                Precio = b.Precio,
                 EstadoTurno = b.EstadoTurno,
-                Especialista = b.RelacionPacienteEspecialista.Especialista
+                Especialista = b.Especialista
             }).ToList();
 
             var viewmodel = new DashboardPacienteVM()
@@ -142,8 +146,7 @@ namespace SeguridadWebv2.Controllers
         public DashboardEspecialistaVM DashboardEspecialista(string EspecialistaID)
         {
             IEnumerable<Turno> turnospacientes = (from turnos in db.Turnos
-                                                  join relacion in db.RelacionPacienteEspecialista on turnos.RelacionId equals relacion.IdRelacion
-                                                  join especialistas in db.Especialistas on relacion.Especialista.Id equals especialistas.Id
+                                                  join especialistas in db.Especialistas on turnos.Especialista.Id equals especialistas.Id
                                                   where especialistas.Id == EspecialistaID && turnos.EstadoTurno == Estado.Pendiente
                                                   select turnos).ToList();
 
@@ -153,15 +156,64 @@ namespace SeguridadWebv2.Controllers
                 Dia = b.Dia.Date,
                 HoraInicio = b.HoraInicio,
                 HoraFin = b.HoraFin,
+                Precio = b.Precio,
                 EstadoTurno = b.EstadoTurno,
-                Especialista = b.RelacionPacienteEspecialista.Especialista,
-                Paciente = b.RelacionPacienteEspecialista.Paciente
+                Especialista = b.Especialista,
+                Paciente = b.Paciente
             }).ToList();
 
             var viewmodel = new DashboardEspecialistaVM()
             {
                 TurnosViewModel = _turnosvm
             };
+            return viewmodel;
+        }
+
+
+
+        [HttpGet]
+        [Authorize]
+        public DashboardAdministradorVM DashboardAdministrator()
+        {
+            IEnumerable<Turno> _turnos = (from t in db.Turnos
+                                         where t.EstadoTurno == Estado.Pendiente
+                                         select t).ToList();
+
+            IEnumerable<Paciente> _pacientes = (from t in db.Pacientes
+                                               where t.Estado == true
+                                               select t).ToList();
+
+            IEnumerable<Especialista> _especialistas = (from t in db.Especialistas
+                                                       where t.Estado == true
+                                                       select t).ToList();
+
+            var _ordenturno = (from e in db.OrdenTurnos
+                               where e.Status == "approved"
+                               orderby e.FechaCreacion
+                               group e by new { e.FechaCreacion.Month } into e
+                               select e.Count()).ToList();
+
+            var _reportemensual = (from e in db.ReporteConsulta.ToList()
+                                   orderby e.MesReporte.Month ascending
+                                   where e.MesReporte.AddMonths(6) > DateTime.Now.AddMonths(-6) && e.MesReporte.Year == 2017
+                                   group e by new { data = e.CantidadConsultas20M } into g
+                                   select new
+                                   {
+                                       g.Key.data
+                                   }).ToList();
+            
+            ViewBag.reportemensual = JsonConvert.SerializeObject(_reportemensual);
+            //ViewBag.reportemensual = _reportemensual;
+            //ViewBag.turnos20M = turnos20M;
+            //ViewBag.turnos30M = turnos30M;
+            var viewmodel = new DashboardAdministradorVM()
+            {
+                turnosvm = _turnos.ToList(),
+                especialistas = _especialistas.ToList(),
+                pacientes = _pacientes.ToList(),
+                reporteconsultaanual = null,
+           };
+
             return viewmodel;
         }
 

@@ -90,6 +90,8 @@ namespace SeguridadWebv2.Controllers
             }
         }
 
+
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -156,6 +158,7 @@ namespace SeguridadWebv2.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    InsertarHistoriaClinica(user);
                     await this.UserManager.AddToRoleAsync(user.Id, "Paciente");
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmarEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
@@ -171,6 +174,15 @@ namespace SeguridadWebv2.Controllers
             return View(model);
         }
 
+        public void InsertarHistoriaClinica(Paciente user)
+        {
+            HistoriaClinica historiaclinica = new HistoriaClinica()
+            {
+                FechaCreacion = DateTime.Now,
+                Anamnesis = null
+            };
+        }
+
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -180,7 +192,27 @@ namespace SeguridadWebv2.Controllers
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            IdentityResult result;
+            try
+            {
+                result = await UserManager.ConfirmEmailAsync(userId, code);
+            }
+            catch (InvalidOperationException ioe)
+            {
+                // ConfirmEmailAsync throws when the userId is not found.
+                ViewBag.errorMessage = ioe.Message;
+                return View("Error");
+            }
+
+            if (result.Succeeded)
+            {
+                return View();
+            }
+
+            // If we got this far, something failed.
+            AddErrors(result);
+ 
+            //var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmarEmail" : "Error");
         }
 

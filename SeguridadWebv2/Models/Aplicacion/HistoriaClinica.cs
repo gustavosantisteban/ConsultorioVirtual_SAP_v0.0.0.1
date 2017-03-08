@@ -14,6 +14,7 @@ namespace SeguridadWebv2.Models.Aplicacion
         {
             this.IdHistoriaClinica = Guid.NewGuid().ToString();
         }
+
         [Key]
         public string IdHistoriaClinica { get; set; }
         public DateTime FechaCreacion { get; set; }

@@ -26,6 +26,7 @@ namespace SeguridadWebv2.Models.ViewModels
         public Especialista Especialista { get; set; }
         public List<HorarioDisponible> HorariosDisponibles { get; set; }
         public string EspecialistaID { get; set; }
+        public decimal Precio { get; set; }
 
         public string FullNombreEspecialista
         {

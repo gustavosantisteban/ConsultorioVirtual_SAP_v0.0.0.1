@@ -93,9 +93,9 @@ namespace SeguridadWebv2.Controllers
                 var horarioDisponible = db.HorariosDisponibles.Include("Horario").FirstOrDefault(x => x.Id == model.TurnoViewModel.Horario.Id);
                 //var horarioDisponible = _db.HorariosDisponibles.Where(x => x.Disponible == true).OrderBy(x => x.Dia).Include(h => h.Horario).Include(e => e.Horario.Especialista).FirstOrDefault(x => x.Id == HorarioDisponible.Id); //.Find(Id);
 
-                Relacion relacion = new Relacion();
+                Turno relacion = new Turno();
                 bool existeRelacion = false;
-                foreach (Relacion relaciones in db.RelacionPacienteEspecialista.Include("Paciente").Include("Especialista"))
+                foreach (Turno relaciones in db.Turnos.Include("Paciente").Include("Especialista"))
                 {
                     if (relaciones.Especialista.EspecialidadId == horarioDisponible.Horario.EspecialistaId && relaciones.Paciente.Id == paciente.Id)
                     {
@@ -108,31 +108,25 @@ namespace SeguridadWebv2.Controllers
                 {
                     relacion.Especialista = horarioDisponible.Horario.Especialista;
                     relacion.Paciente = paciente;
-
-                    Turno turno = new Turno();
-                    turno.Dia = horarioDisponible.Dia;
-                    turno.HoraInicio = horarioDisponible.HoraInicio;
-                    turno.HoraFin = horarioDisponible.HoraFin;
-                    turno.RelacionPacienteEspecialista = relacion;
-                    turno.EstadoTurno = Estado.Pendiente;
-                    relacion.Turnos.Add(turno);
+                    relacion.Dia = horarioDisponible.Dia;
+                    relacion.HoraInicio = horarioDisponible.HoraInicio;
+                    relacion.HoraFin = horarioDisponible.HoraFin;
+                    relacion.EstadoTurno = Estado.Pendiente;
                     horarioDisponible.Disponible = EstadoHorario.Ocupado;
-                    relacion.FechaRelacion = DateTime.Now;
-                    db.RelacionPacienteEspecialista.Add(relacion);
+                    db.Turnos.Add(relacion);
                     db.SaveChanges();
                     return RedirectToAction("Dashboard", "Home");
                 }
                 else
                 {
-                    var turno = new Turno();
-
-                    turno.Dia = horarioDisponible.Dia;
-                    turno.HoraInicio = horarioDisponible.HoraInicio;
-                    turno.HoraFin = horarioDisponible.HoraFin;
-                    turno.RelacionPacienteEspecialista = relacion;
-                    turno.EstadoTurno = Estado.Pendiente;
-                    relacion.Turnos.Add(turno);
-                    horarioDisponible.Disponible = EstadoHorario.Disponible;
+                    relacion.Especialista = horarioDisponible.Horario.Especialista;
+                    relacion.Paciente = paciente;
+                    relacion.Dia = horarioDisponible.Dia;
+                    relacion.HoraInicio = horarioDisponible.HoraInicio;
+                    relacion.HoraFin = horarioDisponible.HoraFin;
+                    relacion.EstadoTurno = Estado.Pendiente;
+                    horarioDisponible.Disponible = EstadoHorario.Ocupado;
+                    db.Turnos.Add(relacion);
                     db.SaveChanges();
                     return RedirectToAction("Dashboard", "Home");
                 }

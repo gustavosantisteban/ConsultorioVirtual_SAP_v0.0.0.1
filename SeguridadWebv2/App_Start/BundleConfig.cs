@@ -43,7 +43,14 @@ namespace SeguridadWebv2
             bundles.Add(new ScriptBundle("~/bundles/adminPanelJs").Include(
                      "~/Scripts/bootstrap.js",
                      "~/Scripts/jquery.dcjqaccordion.2.7.js",
-                     "~/Scripts/SeguridadDashboard.js"));
+                     "~/Scripts/knob/jquery.knob.js",
+                     "~/Content/daterangepicker/daterangepicker.js",
+                     "~/Content/datepicker/bootstrap-datepicker.js",
+                     "~/Scripts/sparkline/jquery.sparkline.min.js",
+                     "~/Scripts/chartjs/Chart.min.js",
+                     "~/Scripts/morris/morris.min.js",
+                     "~/Scripts/SeguridadDashboard.js"
+                     ));
 
             bundles.Add(new ScriptBundle("~/bundles/VideoConfJs").Include(
                    "~/Scripts/adapter.js",
@@ -84,7 +91,11 @@ namespace SeguridadWebv2
                       "~/Content/typeaheadjs.css",
                       "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/magnific-popup.css",
-                      "~/Content/SeguridadStyle.css"));
+                      "~/Scripts/morris/morris.css",
+                      "~/Content/datepicker/datepicker3.css",
+                      "~/Content/daterangepicker/daterangepicker-bs3.css",
+                      "~/Content/SeguridadStyle.css",
+                      "~/Content/skins/_all-skins.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/csshome").Include(
                       "~/Scripts/vendor/bootstrap/css/bootstrap.min.css",
@@ -104,8 +115,10 @@ namespace SeguridadWebv2
             bundles.Add(new StyleBundle("~/Content/adminPanel").Include(
                  "~/Content/font-awesome/css/font-awesome.css",
                  "~/Content/bootstrap.css",
-                  "~/Content/SeguridadDashboard.css",
-                   "~/Content/SeguridadResponsiveDash.css"
+                 "~/Content/SeguridadDashboard.css",
+                 "~/Content/SeguridadResponsiveDash.css",
+                 "~/Content/datepicker/datepicker3.css",
+                 "~/Content/daterangepicker/daterangepicker-bs3.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/VideoConf").Include(

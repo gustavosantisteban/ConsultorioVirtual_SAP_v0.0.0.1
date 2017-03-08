@@ -114,7 +114,7 @@ namespace SeguridadWebv2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Duracion,HoraInicio,CantidadTurnos,Mes,Dia")] HorarioViewModel horarioModels)
+        public ActionResult Create([Bind(Include = "Id,Duracion,HoraInicio,CantidadTurnos,Mes,Dia, Precio")] HorarioViewModel horarioModels)
         {
             if (ModelState.IsValid)
             {
@@ -145,6 +145,7 @@ namespace SeguridadWebv2.Controllers
                         HorarioDisponible horarioDisponible = new HorarioDisponible();
                         horarioDisponible.Dia = dia;
                         horarioDisponible.HorarioId = horarioModels.IDHorario;
+                        horarioDisponible.Precio = horarioModels.Precio;
                         if (horarioModels.CantidadTurnos == totalTurnos)
                         {
                             horarioDisponible.HoraInicio = horarioModels.HoraInicio;
@@ -172,11 +173,12 @@ namespace SeguridadWebv2.Controllers
                     Mes = horarioModels.Mes,
                     HorariosDisponibles = horarioModels.HorariosDisponibles,
                     CantidadTurnos = horarioModels.CantidadTurnos,
-                    EspecialistaId = horarioModels.EspecialistaID
+                    EspecialistaId = horarioModels.EspecialistaID                    
                 };
 
                 db.Horarios.Add(horario);
                 db.SaveChanges();
+                return View("Dashboard", "Home");
             }
             return View("Dashboard", "Home");
         }

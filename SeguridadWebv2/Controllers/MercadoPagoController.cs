@@ -69,9 +69,9 @@ namespace SeguridadWebv2.Controllers
                 items = pf.items.Select(i => new { title = i.title, quantity = i.quantity, currency_id = i.currency_id, unit_price = i.unit_price }).ToArray(),
                 back_urls = new
                 {
-                    success = "http://" + Request.Url.DnsSafeHost + Url.RouteUrl("CheckoutStatus"),
-                    failure = "http://" + Request.Url.DnsSafeHost + Url.RouteUrl("CheckoutStatus"),
-                    pending = "http://" + Request.Url.DnsSafeHost + Url.RouteUrl("CheckoutStatus")
+                    success = "http://" + Request.Url.Authority + Url.RouteUrl("CheckoutStatus"),
+                    failure = "http://" + Request.Url.Authority + Url.RouteUrl("CheckoutStatus"),
+                    pending = "http://" + Request.Url.Authority + Url.RouteUrl("CheckoutStatus")
                 }
             };
             Hashtable preference = mp.createPreference(JsonConvert.SerializeObject(datos));
@@ -163,16 +163,15 @@ namespace SeguridadWebv2.Controllers
 
         public void RegistrarRelacion(string idhorario)
         {
-
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
             Paciente paciente = db.Pacientes.ToList().FirstOrDefault(x => x.Id == currentUser.Id);
 
             var horarioDisponible = db.HorariosDisponibles.Include("Horario").FirstOrDefault(x => x.Id == idhorario);
            
-            Relacion relacion = new Relacion();
+            Turno relacion = new Turno();
             bool existeRelacion = false;
-            foreach (Relacion relaciones in db.RelacionPacienteEspecialista.Include("Paciente").Include("Especialista"))
+            foreach (Turno relaciones in db.Turnos.Include("Paciente").Include("Especialista"))
             {
                 if (relaciones.Especialista.EspecialidadId == horarioDisponible.Horario.EspecialistaId && relaciones.Paciente.Id == paciente.Id)
                 {
@@ -185,30 +184,26 @@ namespace SeguridadWebv2.Controllers
             {
                 relacion.Especialista = horarioDisponible.Horario.Especialista;
                 relacion.Paciente = paciente;
-
-                Turno turno = new Turno();
-                turno.Dia = horarioDisponible.Dia;
-                turno.HoraInicio = horarioDisponible.HoraInicio;
-                turno.HoraFin = horarioDisponible.HoraFin;
-                turno.RelacionPacienteEspecialista = relacion;
-                turno.EstadoTurno = Estado.Pendiente;
-                relacion.Turnos.Add(turno);
+                relacion.Dia = horarioDisponible.Dia;
+                relacion.HoraInicio = horarioDisponible.HoraInicio;
+                relacion.HoraFin = horarioDisponible.HoraFin;
+                relacion.EstadoTurno = Estado.Pendiente;
+                relacion.Precio = horarioDisponible.Precio;
                 horarioDisponible.Disponible = EstadoHorario.Ocupado;
-                relacion.FechaRelacion = DateTime.Now;
-                db.RelacionPacienteEspecialista.Add(relacion);
+                db.Turnos.Add(relacion);
                 db.SaveChanges();
             }
             else
             {
-                var turno = new Turno();
-
-                turno.Dia = horarioDisponible.Dia;
-                turno.HoraInicio = horarioDisponible.HoraInicio;
-                turno.HoraFin = horarioDisponible.HoraFin;
-                turno.RelacionPacienteEspecialista = relacion;
-                turno.EstadoTurno = Estado.Pendiente;
-                relacion.Turnos.Add(turno);
-                horarioDisponible.Disponible = EstadoHorario.Disponible;
+                relacion.Especialista = horarioDisponible.Horario.Especialista;
+                relacion.Paciente = paciente;
+                relacion.Dia = horarioDisponible.Dia;
+                relacion.HoraInicio = horarioDisponible.HoraInicio;
+                relacion.HoraFin = horarioDisponible.HoraFin;
+                relacion.Precio = horarioDisponible.Precio;
+                relacion.EstadoTurno = Estado.Pendiente;
+                horarioDisponible.Disponible = EstadoHorario.Ocupado;
+                db.Turnos.Add(relacion);
                 db.SaveChanges();
             }
         }

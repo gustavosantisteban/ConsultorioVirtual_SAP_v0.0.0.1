@@ -23,9 +23,12 @@ namespace SeguridadWebv2.Models.Aplicacion
         public DateTime HoraFin { get; set; }
         public Estado EstadoTurno { get; set; }
         public string RelacionId { get; set; }
+        public decimal Precio { get; set; }
 
-        [ForeignKey("RelacionId")]
-        public virtual Relacion RelacionPacienteEspecialista { get; set; }
+        public virtual Paciente Paciente { get; set; }
+        public virtual Especialista Especialista { get; set; }
+
+        public virtual List<Consulta> Consultas { get; set; }
     }
 
     public enum Estado

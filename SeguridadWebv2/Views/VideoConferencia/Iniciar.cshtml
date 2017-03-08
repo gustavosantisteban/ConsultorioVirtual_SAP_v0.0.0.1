@@ -1,15 +1,83 @@
 ﻿@using Microsoft.AspNet.Identity
-@model SeguridadWebv2.Models.ViewModels.TurnosViewModel
+@model SeguridadWebv2.Models.ViewModels.ConsultaViewModel
 
 @{
     ViewBag.Title = "Iniciar";
-    Layout = "~/Views/Shared/_LayoutVideoConf.cshtml";
+    //Layout = "~/Views/Shared/_LayoutVideoConf.cshtml";
 }
 
-    @if (Request.IsAuthenticated)
-    {
+<style>
+    .local-video-div {
+	position: fixed;
+	height: 100vh;
+	/*width: 65vh;*/
+	float: left;
+	overflow: hidden;
+	z-index: 2 !important;
+	top: 0;
+	background-color: whitesmoke;
+}
+
+.local-video-div .video-div {
+	width: 50vh;
+	height: 50vh;
+	float: left;
+}
+
+.local-video-div .video-div div {
+	float: left;
+	width: 100%;
+	height: 100%;
+	border:1px solid gray;
+}
+
+#remote-videos-div {
+	overflow: auto;
+	float: right;
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 50vh;
+	border: 1px solid gray;
+	padding: 5px;
+}
+.remote-videos-div::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.remote-video {
+	float: left;
+	width: 16.66%;/*2/12*/
+	padding: 5px;
+	position: relative;
+	text-align: center;
+	overflow: hidden;
+}
+.remote-video::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.remote-video div {
+	float: left;
+	width: 100%;
+	border: 1px solid gray;
+}
+.remote-video span {
+	float: left;
+	color: black;
+	text-align: center;
+	width: 100%;
+	text-overflow: ellipsis;
+}
+</style>
+
+@if (Request.IsAuthenticated)
+{
         <body>
             <div class="col-md-12">
+                <div class="col-md-4">
                     @if (User.IsInRole("AllPaciente") || User.IsInRole("Paciente"))
                     {
                             <!-- Side Bar -->
@@ -52,52 +120,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="renderimages">
-                            <button id="getarchivoscompartidos" class="btn btn-success">Mostrar Archivos Compartidos</button>
-                        </div>
-                    }
-
-                    @*<div class="jumbotron">
-                <form action="~/VideoConferencia/SubirArchivosConsulta" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneCompartidoForm">
-                    <div class="fallback">
-                        <input name="file" type="file" multiple />
-                    </div>
-                </form>
-            </div>*@
-                <!-- Videos -->
-                <div class="col-md-8">
-                    <div class="row-fluid">
-                        <div class="body-content">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Participant</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="subscribers"><div id="publisher"></div></div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Instructions</h3>
+                                <h3 class="panel-title">Guardar Consulta</h3>
                             </div>
                             <div class="panel-body">
-                                <p>
-                                    Click <strong>Start archiving</strong> to begin archiving this session.
-                                    All publishers in the session will be included, and all publishers that
-                                    join the session will be included as well.
-                                </p>
-                                <p>
-                                    Click <strong>Stop archiving</strong> to end archiving this session.
-                                    You can then go to <a href="/Archive/List">past archives</a> to
-                                    view your archive (once its status changes to available).
-                                </p>
                                 <table class="table">
                                     <thead>
-                                        <tr>
-                                            <th>When</th>
-                                            <th>You will see</th>
-                                        </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
@@ -115,49 +144,43 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
+                        <div id="renderimages">
+                            <button id="getarchivoscompartidos" class="btn btn-success">Mostrar Archivos Compartidos</button>
+                        </div>
+                    }
+                </div>
+                            <!-- Videos -->
+                            <div class="col-md-8">
+                                <div class="row-fluid">
+                                    <div class="body-content">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Consulta</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div id="subscribers" class="local-video-div video-div"></div>
+                                                <div id="publisher" class="local-video"></div>
+                                                @*<div id="otEmbedContainer" style="width:800px; height:640px"></div>
+                                                    <script src="https://tokbox.com/embed/embed/ot-embed.js?embedId=b21148ba-a7d5-44f5-b147-620932139b9f"></script>*@
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <div class="body-content">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Host</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        @*<div id="subscribers"></div>
-                                        <div id="publisher"></div>*@
-                                        @*<div id="otEmbedContainer" style="width:800px; height:640px"></div>
-                                        <script src="https://tokbox.com/embed/embed/ot-embed.js?embedId=b21148ba-a7d5-44f5-b147-620932139b9f"></script>*@
-                                    </div>
-                                    <div class="panel-footer">
-                                        <button class="btn btn-danger start">Start archiving</button>
-                                        <button class="btn btn-success stop">Stop archiving</button>
+                                    <div id="renderimages">
+                                        <button id="getarchivoscompartidos" class="btn btn-success">Mostrar Archivos</button>
                                     </div>
                                 </div>
                             </div>
-
-                            <div id="renderimages">
-                                <button id="getarchivoscompartidos" class="btn btn-success">Mostrar Archivos</button>
-                            </div>
                         </div>
-                    </div>
-                </div>
-                @Html.HiddenFor(model => model.Especialista.Id)
-                @Html.HiddenFor(model => model.Paciente.Id)
-                @Html.HiddenFor(model => model.RelacionId)
+                @Html.HiddenFor(model => model.TurnoVM.Especialista.Id)
+                @Html.HiddenFor(model => model.TurnoVM.Paciente.Id)
+                @Html.HiddenFor(model => model.TurnoVM.IdTurno)
                 <!-- Footer -->
                 <hr>
-            </div>
         </body>
     }
-    @*<div class="wrapper">
-            <div class="cell">
-                <div id="holder">
-                    <div class="digits"></div>
-                </div>
-            </div>
-        </div>
-        </body>
-    *@
     @section Scripts {
         @Scripts.Render("~/bundles/signalr")
         @Scripts.Render("~/signalr/hubs")
@@ -215,7 +238,7 @@
             });*@
 
 
-    // Initialize an OpenTok Session object
+    @*// Initialize an OpenTok Session object
     var session = TB.initSession("@ViewBag.sessionId");
 
     // Initialize a Publisher, and place it into the element with id="publisher"
@@ -229,6 +252,16 @@
             // clients)
             session.publish(publisher);
         },
+
+        @*session.connect("@ViewBag.apiKey", "@ViewBag.token", function (err, info) {
+            if (err) {
+                alert(err.message || err);
+                console.log("Fallo la conexion.");
+            } else {
+                session.publish(publisher);
+                console.log('Tienes que conectar a una session.');
+            }
+        });
 
         // This function runs when another client publishes a stream (eg. session.publish())
         streamCreated: function (event) {
@@ -245,22 +278,59 @@
     });
 
     // Connect to the Session using the 'apiKey' of the application and a 'token' for permission
-    session.connect(apiKey, token);
+    session.connect("@ViewBag.apiKey", "@ViewBag.token");*@
+    $(document).ready(function() {
+        initializeSession();
+    });
 
-        session.on('archiveStarted', function (event) {
-            archiveID = event.id;
-            console.log("ARCHIVE STARTED");
-            $(".start").hide();
-            $(".stop").show();
+    function initializeSession() {
+        var session = OT.initSession("@ViewBag.apiKey", "@ViewBag.sessionId");
+
+        // Subscribe to a newly created stream
+        session.on('streamCreated', function (event) {
+            session.subscribe(event.stream, 'subscribers', {
+                insertMode: 'append',
+                width: '80%',
+                height: '50%'
+            });
         });
 
-        session.on('archiveStopped', function (event) {
-            archiveID = null;
-            console.log("ARCHIVE STOPPED");
-            $(".start").show();
-            $(".stop").hide();
-            enableForm();
+        session.on('sessionDisconnected', function (event) {
+            console.log('You were disconnected from the session.', event.reason);
         });
+
+        // Connect to the session
+        session.connect("@ViewBag.token", function (error) {
+            // If the connection is successful, initialize a publisher and publish to the session
+            if (!error) {
+                var publisher = OT.initPublisher('publisher', {
+                    insertMode: 'append',
+                    width: '50%',
+                    height: '80%'
+                });
+
+                session.publish(publisher);
+            } else {
+                console.log('There was an error connecting to the session: ', error.code, error.message);
+            }
+        });
+    }
+
+
+        //session.on('archiveStarted', function (event) {
+        //    archiveID = event.id;
+        //    console.log("ARCHIVE STARTED");
+        //    $(".start").hide();
+        //    $(".stop").show();
+        //});
+
+        //session.on('archiveStopped', function (event) {
+        //    archiveID = null;
+        //    console.log("ARCHIVE STOPPED");
+        //    $(".start").show();
+        //    $(".stop").hide();
+        //    enableForm();
+        //});
 
         //$(document).ready(function () {
         //    $(".start").click(function (event) {
@@ -272,24 +342,24 @@
         //    }).hide();
         //});
 
-        $(document).ready(function () {
-            $(".start").click(function (event) {
-                var options = $(".archive-options").serialize();
-                disableForm();
-                $.post("/Archive/Start", options).fail(enableForm);
-            }).show();
-            $(".stop").click(function (event) {
-                $.get("/Archive/Stop/" + archiveID);
-            }).hide();
-        });
+        //$(document).ready(function () {
+        //    $(".start").click(function (event) {
+        //        var options = $(".archive-options").serialize();
+        //        disableForm();
+        //        $.post("/Archive/Start", options).fail(enableForm);
+        //    }).show();
+        //    $(".stop").click(function (event) {
+        //        $.get("/Archive/Stop/" + archiveID);
+        //    }).hide();
+        //});
 
-        function disableForm() {
-            $(".archive-options-fields").attr('disabled', 'disabled');
-        }
+        //function disableForm() {
+        //    $(".archive-options-fields").attr('disabled', 'disabled');
+        //}
 
-        function enableForm() {
-            $(".archive-options-fields").removeAttr('disabled');
-        }
+        //function enableForm() {
+        //    $(".archive-options-fields").removeAttr('disabled');
+        //}
 
 </script>
 

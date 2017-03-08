@@ -20,7 +20,7 @@
         </th>
         <th></th>
     </tr>
-    @foreach (var item in Model)
+    @foreach (var item in Model.OrderByDescending(x => x.Dia))
     {
         <tr>
             <td>

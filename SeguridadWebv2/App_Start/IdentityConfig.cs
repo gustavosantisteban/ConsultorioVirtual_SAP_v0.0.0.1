@@ -38,7 +38,7 @@ namespace SeguridadWebv2.Models
                 RequireNonLetterOrDigit = true,
                 RequireDigit = true,
                 RequireLowercase = true,
-                RequireUppercase = true,
+                RequireUppercase = true
             };
             // Configure user lockout defaults
             manager.UserLockoutEnabledByDefault = true;
@@ -88,7 +88,7 @@ namespace SeguridadWebv2.Models
                 // Plug in your email service here to send an email.
                 var credentialUserName = "finalmcga@gmail.com";
                 var sentFrom = "finalmcga@gmail.com";
-                var pwd = "finalmcga123";
+                var pwd = "consultoriovirtual17";
 
                 // Configure the client:
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("smtp.gmail.com");

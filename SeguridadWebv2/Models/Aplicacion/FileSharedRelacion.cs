@@ -26,8 +26,6 @@ namespace SeguridadWebv2.Models.Aplicacion
 
         [ForeignKey("IdFile")]
         public virtual File File { get; set; }
-        [ForeignKey("IdRelacion")]
-        public virtual Relacion Relacion { get; set; }
 
     }
 }

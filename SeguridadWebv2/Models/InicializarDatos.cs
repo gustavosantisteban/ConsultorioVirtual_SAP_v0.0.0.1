@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using SeguridadWebv2.Models.Aplicacion;
 using SeguridadWebv2.Services;
+using SeguridadWebv2.Models.ReportClass;
 
 namespace SeguridadWebv2.Models
 {
@@ -325,7 +326,36 @@ namespace SeguridadWebv2.Models
             groupManager.CreateGroup(newGrouppac);
             groupManager.SetUserGroups(paciente.Id, new string[] { newGrouppac.Id });
             groupManager.SetGroupRoles(newGrouppac.Id, new string[] { rolepac.Name });
-            
+
+        
+            //var paciente2 = userManager.FindByName("pabloaudoglio@gmail.com");
+            //if (paciente2 == null)
+            //{
+            //    paciente2 = new Paciente
+            //    {
+            //        UserName = "pabloaudoglio@gmail.com",
+            //        Email = "pabloaudoglio@gmail.com",
+            //        Nombre = "Pablo",
+            //        Apellido = "Audoglio",
+            //        Estado = true,
+            //        PhoneNumber = "3413544172",
+            //        EmailConfirmed = true,
+            //        ImagenPaciente = "~/Content/img/medicos/pablo_audoglio.png",
+            //        FechadeCumpleanos = Convert.ToDateTime("1990-12-12 00:00"),
+            //        Genero = Sexo.Femenino,
+            //        HistoriaClinica = new HistoriaClinica
+            //        {
+            //            Anamnesis = null,
+            //            FechaCreacion = DateTime.Now
+            //        }
+            //    };
+            //    const string clavepacient = "Mcga@123456";
+            //    var resultadoesp2 = userManager.Create(paciente2, clavepacient);
+            //    resultadoesp2 = userManager.SetLockoutEnabled(paciente2.Id, false);
+            //}
+            //groupManager.SetUserGroups(paciente2.Id, new string[] { newGrouppac.Id });
+            //groupManager.SetGroupRoles(newGrouppac.Id, new string[] { rolepac.Name });
+
             var espe = userManager.FindByName("hernan_carballo@gmail.com");
             if (espe == null)
             {
@@ -361,6 +391,228 @@ namespace SeguridadWebv2.Models
                 userManager.AddToRoles(espe.Id, turnosroles.Name);
             }
 
+            var reporteconsulta = new List<ReporteConsultaAnual>
+            {
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-01 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-02 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-03 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-04 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-05 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-06 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-07 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-08 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 0,
+                    CantidadConsultas30M = 0,
+                    MesReporte = Convert.ToDateTime("2016-01-09 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 56,
+                    CantidadConsultas30M = 14,
+                    MesReporte = Convert.ToDateTime("2016-01-10 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 128,
+                    CantidadConsultas30M = 32,
+                    MesReporte = Convert.ToDateTime("2016-01-11 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 300,
+                    CantidadConsultas30M = 75,
+                    MesReporte = Convert.ToDateTime("2016-01-12 00:00")
+                },
+                //Segundo Año
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 576,
+                    CantidadConsultas30M = 144,
+                    MesReporte = Convert.ToDateTime("2017-01-01 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 1080,
+                    CantidadConsultas30M = 270,
+                    MesReporte = Convert.ToDateTime("2017-01-02 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 1600,
+                    CantidadConsultas30M = 400,
+                    MesReporte = Convert.ToDateTime("2017-01-03 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 1920,
+                    CantidadConsultas30M = 480,
+                    MesReporte = Convert.ToDateTime("2017-01-04 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 2464,
+                    CantidadConsultas30M = 748,
+                    MesReporte = Convert.ToDateTime("2017-01-05 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 2992,
+                    CantidadConsultas30M = 748,
+                    MesReporte = Convert.ToDateTime("2017-01-06 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 3520,
+                    CantidadConsultas30M = 880,
+                    MesReporte = Convert.ToDateTime("2017-01-07 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 4324,
+                    CantidadConsultas30M = 1081,
+                    MesReporte = Convert.ToDateTime("2017-01-08 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 4600,
+                    CantidadConsultas30M = 1150,
+                    MesReporte = Convert.ToDateTime("2017-01-09 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 4784,
+                    CantidadConsultas30M = 1196,
+                    MesReporte = Convert.ToDateTime("2017-01-10 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 5184,
+                    CantidadConsultas30M = 1296,
+                    MesReporte = Convert.ToDateTime("2017-01-11 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 5400,
+                    CantidadConsultas30M = 1350,
+                    MesReporte = Convert.ToDateTime("2017-01-12 00:00")
+                },
+                //Tercer Año
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 5600,
+                    CantidadConsultas30M = 1400,
+                    MesReporte = Convert.ToDateTime("2018-01-01 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 5700,
+                    CantidadConsultas30M = 1425,
+                    MesReporte = Convert.ToDateTime("2018-01-02 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 5700,
+                    CantidadConsultas30M = 1425,
+                    MesReporte = Convert.ToDateTime("2018-01-03 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 5800,
+                    CantidadConsultas30M = 1450,
+                    MesReporte = Convert.ToDateTime("2018-01-04 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6000,
+                    CantidadConsultas30M = 1500,
+                    MesReporte = Convert.ToDateTime("2018-01-05 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6000,
+                    CantidadConsultas30M = 1500,
+                    MesReporte = Convert.ToDateTime("2018-01-06 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6000,
+                    CantidadConsultas30M = 1500,
+                    MesReporte = Convert.ToDateTime("2018-01-07 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6000,
+                    CantidadConsultas30M = 1500,
+                    MesReporte = Convert.ToDateTime("2018-01-08 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6100,
+                    CantidadConsultas30M = 1525,
+                    MesReporte = Convert.ToDateTime("2018-01-09 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6448,
+                    CantidadConsultas30M = 1612,
+                    MesReporte = Convert.ToDateTime("2018-01-10 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6696,
+                    CantidadConsultas30M = 1674,
+                    MesReporte = Convert.ToDateTime("2018-01-11 00:00")
+                },
+                new ReporteConsultaAnual()
+                {
+                    CantidadConsultas20M = 6944,
+                    CantidadConsultas30M = 1736,
+                    MesReporte = Convert.ToDateTime("2018-01-12 00:00")
+                }
+            };
+            reporteconsulta.ForEach(c => db.ReporteConsulta.Add(c));
             db.SaveChanges();
         }
     }

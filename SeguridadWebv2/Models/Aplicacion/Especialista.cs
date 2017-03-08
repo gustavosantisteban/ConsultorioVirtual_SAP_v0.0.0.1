@@ -24,7 +24,6 @@ namespace SeguridadWebv2.Models.Aplicacion
         public virtual Especialidad Especialidad { get; set; }
         public virtual ICollection<Turno> Turnos { get; set; }
         public virtual ICollection<Horario> Horarios { get; set; }
-        public virtual ICollection<Relacion> RelacionEspecialista { get; set; }
     }
 
     public enum Prefijo

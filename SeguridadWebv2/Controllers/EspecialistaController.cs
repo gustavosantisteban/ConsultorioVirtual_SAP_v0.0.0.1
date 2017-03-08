@@ -140,6 +140,15 @@ namespace SeguridadWebv2.Controllers
             };
             return View(model);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult MisPacientes()
+        {
+            //List<Paciente> pacientes = (from p in db.Turnos
+            //                            where p)
+            return View();
+        }
         //[HttpGet]
         //public JsonResult SearchtoDateTurno(string id, DateTime dato)
         //{

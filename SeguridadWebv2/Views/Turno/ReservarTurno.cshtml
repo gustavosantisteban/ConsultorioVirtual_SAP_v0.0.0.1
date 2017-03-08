@@ -141,15 +141,13 @@
                 </div>
             </div>
         }
-
-    <div class="container body-content">
-        <h3>O Page por Mercado Libre</h3>
-        <button name="MP-Checkout" class="orange-ar-m-sq-arall" id="btnCO" style="margin-top: 20px;" onclick="_doCheckout()"><i class="glyphicon glyphicon-credit-card"></i>Pago</button>
-        @*<a href="@{ }" name="MP-Checkout" class="orange-ar-m-sq-arall">Pay</a>*@
-        <script type="text/javascript" src="//resources.mlstatic.com/mptools/render.js"></script>
-    </div>
 </div>
-
+<div class="container body-content">
+    <h3>O Page por Mercado Libre</h3>
+    <button name="MP-Checkout" class="orange-ar-m-sq-arall" id="btnCO" style="margin-top: 20px;" onclick="_doCheckout()"><i class="glyphicon glyphicon-credit-card"></i>Pago</button>
+    @*<a href="@{ }" name="MP-Checkout" class="orange-ar-m-sq-arall">Pay</a>*@
+    <script type="text/javascript" src="//resources.mlstatic.com/mptools/render.js"></script>
+</div>
 @section Scripts {
    @Scripts.Render("~/bundles/jqueryval")
 }
@@ -173,14 +171,4 @@
                 },
             });
         }
-
-        $('#mp').on('click', function () {
-            $.ajax({
-                type: "GET",
-                url: "/APIMercadoPago/MercadoPago",
-                dataType: "json",
-                success: function (data) {
-                }
-            });
-        });
 </script>

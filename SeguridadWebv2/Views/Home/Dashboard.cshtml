@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Dashboard";
 }
 
@@ -35,6 +34,14 @@
                     {
                         <a href='@Url.Action("Index", "Turnos")' class="shortcut"> <i class="fa fa-medkit"></i><span class="shortcut-label">Turnos</span></a>
                     }
+                    @if (User.IsInRole("Admin") || User.IsInRole("AllUsuarios"))
+                    {
+                        <a href='@Url.Action("Index", "Especialistas")' class="shortcut"><i class="fa fa-user-md"></i><span class="shortcut-label">Especialistas</span></a>
+                    }
+                    @if (User.IsInRole("Admin") || User.IsInRole("AllUsuarios"))
+                    {
+                        <a href='@Url.Action("Index", "Pacientes")' class="shortcut"><i class="fa fa-users"></i><span class="shortcut-label">Pacientes</span></a>
+                    }
                     @if (User.IsInRole("AllProfesionales") || User.IsInRole("Profesionales") || User.IsInRole("Profesional"))
                     {
                         <a href='@Url.Action("MisHorarios", "Horario")' class="shortcut"> <i class="fa fa-clock-o"></i><span class="shortcut-label">Horarios</span></a>
@@ -42,6 +49,10 @@
                     @if (User.IsInRole("AllTurnos") || User.IsInRole("Profesionales") || User.IsInRole("Profesional"))
                     {
                         <a href='@Url.Action("MisTurnos", "Especialistas")' class="shortcut"> <i class="fa fa-medkit"></i><span class="shortcut-label">Turnos</span></a>
+                    }
+                    @if (User.IsInRole("AllPacientes") || User.IsInRole("Profesionales") || User.IsInRole("Profesional"))
+                    {
+                        <a href='@Url.Action("MisPacientes", "Especialistas")' class="shortcut"> <i class="fa fa-medkit"></i><span class="shortcut-label">Pacientes</span></a>
                     }
                 </div>
                 <!-- /shortcuts -->
@@ -59,4 +70,8 @@
 @if (User.IsInRole("AllProfesionales") || User.IsInRole("Profesionales") || User.IsInRole("Profesional"))
 {
     @Html.Partial("_DashboardEspecialistaList")
+}
+@if (User.IsInRole("Admin"))
+{
+    @Html.Partial("_DashboardAdministrador")
 }

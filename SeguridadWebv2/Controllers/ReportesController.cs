@@ -36,8 +36,7 @@ namespace SeguridadWebv2.Controllers
             var rol = UserManager.GetRoles(usuario);
 
             var especialistasTurnosCount = (from turnos in db.Turnos
-                                            join relacion in db.RelacionPacienteEspecialista on turnos.RelacionId equals relacion.IdRelacion
-                                            join especialistas in db.Especialistas on relacion.Especialista.Id equals especialistas.Id
+                                            join especialistas in db.Especialistas on turnos.Especialista.Id equals especialistas.Id
                                             where especialistas.Id == usuario && turnos.EstadoTurno == Estado.Pendiente
                                             select new
                                             {

@@ -14,6 +14,7 @@ namespace SeguridadWebv2.Models.Aplicacion
             this.Id = Guid.NewGuid().ToString();
             Disponible = EstadoHorario.Disponible;
         }
+
         [Key]
         public string Id { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]

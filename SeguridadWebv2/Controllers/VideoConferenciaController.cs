@@ -26,8 +26,6 @@ namespace SeguridadWebv2.Controllers
         private OpenTok opentok = new OpenTok(Convert.ToInt32(ConfigurationManager.AppSettings["opentok_key"]),
                                         ConfigurationManager.AppSettings["opentok_secret"]);
         // GET: VideoConferencia
-        //[AsyncTimeout(2000)]
-        //[HandleError(ExceptionType = typeof(TimeoutException), View = "TimedOut")]
         [SessionExpire]
         public async Task<ActionResult> Iniciar(string id)
         {
@@ -38,20 +36,22 @@ namespace SeguridadWebv2.Controllers
                 return HttpNotFound();
             }
             var rol = UserManager.GetRoles(usuario);
-            var turno = db.Turnos.Include("RelacionPacienteEspecialista").Where(x => x.IdTurno == id).FirstOrDefault();
-
-            var model = new TurnosViewModel()
+            var turno = db.Turnos.Include("Paciente").Include("Especialista").Where(x => x.IdTurno == id).FirstOrDefault();
+            var historiaclinica = db.HistoriaClinica.Find(turno.Paciente.Id);
+            var consultaviewmodel = new ConsultaViewModel
             {
-                Dia = turno.Dia,
-                Especialista = turno.RelacionPacienteEspecialista.Especialista,
-                Paciente = turno.RelacionPacienteEspecialista.Paciente,
-                HoraInicio = turno.HoraInicio,
-                HoraFin = turno.HoraFin,
-                RelacionId = turno.RelacionId
+                Calificacion = null,
+                HistoriaClinica = historiaclinica,
+                TurnoVM = new TurnosViewModel()
+                {
+                    Dia = turno.Dia,
+                    Especialista = turno.Especialista,
+                    Paciente = turno.Paciente,
+                    HoraInicio = turno.HoraInicio,
+                    HoraFin = turno.HoraFin,
+                    RelacionId = turno.RelacionId
+                }
             };
-            
-            ViewBag.FechaFin = (turno.HoraFin - DateTime.Now);
-
             try
             {
                 string sessionId = GetSessionId(HttpContext.ApplicationInstance.Application);
@@ -77,7 +77,7 @@ namespace SeguridadWebv2.Controllers
             //ViewBag.Token = opentok.GenerateToken(sessionId, tokenOptions);
             //return View();
 
-            return View(model);
+            return View(consultaviewmodel);
         }
 
         private string GetSessionId(HttpApplicationState Application)
@@ -220,7 +220,7 @@ namespace SeguridadWebv2.Controllers
             var rol = UserManager.GetRoles(usuario);
             if (rol.Contains("Paciente"))
             {
-                var relacion = db.RelacionPacienteEspecialista.Where(x => x.Paciente.Id == usuario).FirstOrDefault();
+                var relacion = db.Turnos.Where(x => x.Paciente.Id == usuario).FirstOrDefault();
                 //Mapper.Initialize(cfg =>
                 //{
                 //    cfg.CreateMap<FileSharedRelacion, FilesSharedViewModel>()
@@ -248,7 +248,7 @@ namespace SeguridadWebv2.Controllers
             }
             if (rol.Contains("Profesionales"))
             {
-                var relacion = db.RelacionPacienteEspecialista.Where(x => x.Paciente.Id == usuario).FirstOrDefault();
+                var relacion = db.Turnos.Where(x => x.Paciente.Id == usuario).FirstOrDefault();
                 //Mapper.Initialize(cfg =>
                 //{
                 //    cfg.CreateMap<FileSharedRelacion, FilesSharedViewModel>()
@@ -287,13 +287,13 @@ namespace SeguridadWebv2.Controllers
             List<Models.Aplicacion.File> archivos = new List<Models.Aplicacion.File>();
             ApplicationUserManager UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var usuario = User.Identity.GetUserId();
-            var resultado = db.RelacionPacienteEspecialista.Where(x => x.IdRelacion == id).FirstOrDefault();
+            var resultado = db.Turnos.Where(x => x.IdTurno == id).FirstOrDefault();
             //var paciente = db.Pacientes.Where(x => x.Id == resultado.Paciente.Id).FirstOrDefault();
             //var profesional = db.Especialistas.Where(x => x.Id == resultado.Especialista.Id).FirstOrDefault();
             var rol = UserManager.GetRoles(usuario);
             if (rol.Contains("Paciente"))
             {
-                var result = db.FileSharedRelacion.Include("File").Where(x => x.IdRelacion == resultado.IdRelacion).FirstOrDefault();
+                var result = db.FileSharedRelacion.Include("File").Where(x => x.IdRelacion == resultado.IdTurno).FirstOrDefault();
                 if (result != null)
                 {
                     Models.Aplicacion.File ok = result.File;
@@ -308,7 +308,7 @@ namespace SeguridadWebv2.Controllers
             }
             if (rol.Contains("Paciente"))
             {
-                var result = db.FileSharedRelacion.Include("File").Where(x => x.IdRelacion == resultado.IdRelacion).FirstOrDefault();
+                var result = db.FileSharedRelacion.Include("File").Where(x => x.IdRelacion == resultado.IdTurno).FirstOrDefault();
                 Models.Aplicacion.File ok = result.File;
                 ok.FullPath = ok.FullPath.Replace(@"\\", @"\");
                 return PartialView("~/Views/VideoConferencia/_UploadFiles.cshtml", result.File);
@@ -330,37 +330,29 @@ namespace SeguridadWebv2.Controllers
                     AnamnesisCardiovascular cardio = new AnamnesisCardiovascular()
                     {
                         Fecha = DateTime.Now,
-                        PatologiaCardiovascular = null,
+                        Encabezado = "",
+                        Texto = ""
                     };
                     return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
                 case "1":
                     AnamnesisDisgestiva digestiva = new AnamnesisDisgestiva()
                     {
                         Fecha = DateTime.Now,
-                        PatologiaDigestiva = null,
+                        Encabezado = "",
+                        Texto = ""
                     };
                     return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
                 case "2":
                     AnamnesisRespiratoria respi = new AnamnesisRespiratoria()
                     {
                         Fecha = DateTime.Now,
-                        PatologiaRespiratoria = null,
+                        Encabezado = "",
+                        Texto = ""
                     };
                     return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
             };
             return PartialView();
         }
-
-        [HttpGet]
-        public ActionResult PartialCreatePatologia(string id)
-        {
-            Patologia cardio = new Patologia()
-            {
-               Motivo = "",
-               Descripcion = "",
-               ValidarMotivo = false,        
-             };
-            return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml", cardio);
-        }
+        
     }
 }
