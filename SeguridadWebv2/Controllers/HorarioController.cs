@@ -178,9 +178,9 @@ namespace SeguridadWebv2.Controllers
 
                 db.Horarios.Add(horario);
                 db.SaveChanges();
-                return View("Dashboard", "Home");
+                return RedirectToAction("MisHorarios", "Horario");
             }
-            return View("Dashboard", "Home");
+            return RedirectToAction("MisHorarios", "Horario");
         }
 
         // GET: Horario/Edit/5

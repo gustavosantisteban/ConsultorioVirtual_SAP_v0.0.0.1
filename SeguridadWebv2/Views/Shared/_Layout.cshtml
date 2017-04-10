@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script>
@@ -31,7 +34,7 @@
                     <img style="height: 30px; margin-top: -5px;"
                          src="~/Content/img/consultorio_virtual_logo.png">
                 </a>
-                @*@Html.ActionLink("Consultorio Virtual", "Index", "Home", null, new { @class = "navbar-brand" })*@
+                @Html.ActionLink("Consultorio Virtual", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse navbar-right">
                 <ul class="nav navbar-nav">
@@ -51,14 +54,16 @@
     <div class="container indexcontainer">
         @RenderBody()
         <hr />
-        <footer>
-            <p>Consultorio Virtual - &copy; @DateTime.Now.Year</p>
-        </footer>
     </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    @Scripts.Render("~/bundles/adminPanelJs")
-    @RenderSection("scripts", required: false)
+    <div id="wrapper" class="col-md-12">
+        <div id="footer-zone">
+            <p>Consultorio Virtual - &copy; @DateTime.Now.Year</p>
+        </div> 
+    </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        @Scripts.Render("~/bundles/adminPanelJs")
+        @RenderSection("scripts", required: false)
 </body>
 </html>

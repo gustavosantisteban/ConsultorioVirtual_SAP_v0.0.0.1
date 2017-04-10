@@ -190,8 +190,10 @@ namespace SeguridadWebv2.Controllers
             var _ordenturno = (from e in db.OrdenTurnos
                                where e.Status == "approved"
                                orderby e.FechaCreacion
-                               group e by new { e.FechaCreacion.Month } into e
-                               select e.Count()).ToList();
+                               group e by new { data = e.FechaCreacion.Month } into e
+                               select new {
+                                   e.Key.data
+                               }).ToList();
 
             var _reportemensual = (from e in db.ReporteConsulta.ToList()
                                    orderby e.MesReporte.Month ascending
@@ -203,6 +205,7 @@ namespace SeguridadWebv2.Controllers
                                    }).ToList();
             
             ViewBag.reportemensual = JsonConvert.SerializeObject(_reportemensual);
+            ViewBag.ordenturno = JsonConvert.SerializeObject(_ordenturno);
             //ViewBag.reportemensual = _reportemensual;
             //ViewBag.turnos20M = turnos20M;
             //ViewBag.turnos30M = turnos30M;

@@ -98,7 +98,7 @@ namespace SeguridadWebv2.Controllers
                     await UserManager.SendEmailAsync(user.Id, "Confirmar su cuenta", "Por favor para confirmar su cuenta haga click en el siguiente enlace: <a href=\"" + callbackUrl + "\">link</a>");
 
                     //ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
+                    return View("~/Views/Account/DisplayEmail.cshtml");
                 }
                 AddErrors(result);
             }

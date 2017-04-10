@@ -50,7 +50,7 @@
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3>65</h3>
-                    <p>Unique Visitors al @DateTime.Now.ToShortDateString()</p>
+                    <p> Preguntas al @DateTime.Now.ToShortDateString()</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
@@ -93,36 +93,36 @@
                     </div><!-- /.col -->
                     <div class="col-md-4">
                         <p class="text-center">
-                            <strong>Goal Completion</strong>
+                            <strong>Objetivos al @DateTime.Now</strong>
                         </p>
                         <div class="progress-group">
-                            <span class="progress-text">Add Products to Cart</span>
-                            <span class="progress-number"><b>160</b>/200</span>
+                            <span class="progress-text">Objetivo Consultas Mes</span>
+                            <span class="progress-number"><b>50</b>/200</span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                                <div class="progress-bar progress-bar-aqua" style="width: 25%"></div>
                             </div>
                         </div><!-- /.progress-group -->
                         <div class="progress-group">
-                            <span class="progress-text">Complete Purchase</span>
-                            <span class="progress-number"><b>310</b>/400</span>
+                            <span class="progress-text">Objetivo Consultas Anuales</span>
+                            <span class="progress-number"><b>5</b>/100</span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-red" style="width: 80%"></div>
+                                <div class="progress-bar progress-bar-red" style="width: 5%"></div>
                             </div>
                         </div><!-- /.progress-group -->
                         <div class="progress-group">
-                            <span class="progress-text">Visit Premium Page</span>
-                            <span class="progress-number"><b>480</b>/800</span>
+                            <span class="progress-text">Mensaje de Usuarios</span>
+                            <span class="progress-number"><b>50</b>/100</span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-green" style="width: 80%"></div>
+                                <div class="progress-bar progress-bar-green" style="width: 50%"></div>
                             </div>
                         </div><!-- /.progress-group -->
-                        <div class="progress-group">
+                        @*<div class="progress-group">
                             <span class="progress-text">Send Inquiries</span>
                             <span class="progress-number"><b>250</b>/500</span>
                             <div class="progress sm">
                                 <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
                             </div>
-                        </div><!-- /.progress-group -->
+                        </div>*@<!-- /.progress-group -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- ./box-body -->
@@ -138,29 +138,86 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="description-block border-right">
                             <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">$10,390.90</h5>
-                            <span class="description-text">TOTAL COST</span>
+                            <h5 class="description-header">$1.235, 432.90</h5>
+                            <span class="description-text">COSTO DE LA APLICACION</span>
                         </div><!-- /.description-block -->
                     </div><!-- /.col -->
                     <div class="col-sm-3 col-xs-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                            <h5 class="description-header">$24,813.53</h5>
-                            <span class="description-text">TOTAL PROFIT</span>
+                            <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 1%</span>
+                            <h5 class="description-header">$ @Model.turnosvm.Sum(x => x.Precio)</h5>
+                            <span class="description-text">RECAUDADO MERCADO PAGO</span>
                         </div><!-- /.description-block -->
                     </div><!-- /.col -->
                     <div class="col-sm-3 col-xs-6">
                         <div class="description-block">
-                            <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                            <h5 class="description-header">1200</h5>
-                            <span class="description-text">GOAL COMPLETIONS</span>
+                            <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 20%</span>
+                            <h5 class="description-header">$ @Model.turnosvm.Where(x => x.Dia.Month == DateTime.Now.Month).Sum(x => x.Precio)</h5>
+                            <span class="description-text">OBJETIVO DEL MES</span>
                         </div><!-- /.description-block -->
                     </div>
                 </div><!-- /.row -->
             </div><!-- /.box-footer -->
-        </div><!-- /.box -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Reportes Especialidades</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="chart-responsive">
+                                        <canvas id="pieChart" height="150"></canvas>
+                                    </div><!-- ./chart-responsive -->
+                                </div><!-- /.col -->
+                                <div class="col-md-4">
+                                    <ul class="chart-legend clearfix">
+                                        <li><i class="fa fa-circle text-red"></i> Psicologia</li>
+                                        <li><i class="fa fa-circle text-green"></i> Pediatria</li>
+                                        <li><i class="fa fa-circle text-yellow"></i> Nutricion</li>
+                                        <li><i class="fa fa-circle text-aqua"></i> Neurologia</li>
+                                        <li><i class="fa fa-circle text-light-blue"></i> Ginecologia</li>
+                                        <li><i class="fa fa-circle text-gray"></i> Neumologia</li>
+                                    </ul>
+                                </div><!-- /.col -->
+                            </div><!-- /.row -->
+                        </div><!-- /.box-body -->
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Neumologia <span class="pull-right text-red"><i class="fa fa-angle-down"></i> 25%</span></a></li>
+                                <li><a href="#">Ginecologia <span class="pull-right text-green"><i class="fa fa-angle-up"></i> 15%</span></a></li>
+                                <li><a href="#">Psicologia <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> 10%</span></a></li>
+                            </ul>
+                        </div><!-- /.footer -->
+                    </div><!-- /.box-default -->
+                </div>
+
+                <div class="col-md-6">
+                    <!-- BAR CHART -->
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Preguntas</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart">
+                                <canvas id="barChart" style="height:230px"></canvas>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
 
 
 <script src="~/Scripts/chartjs/Chart.min.js"></script>
@@ -181,10 +238,10 @@
         return devolverstring;
     };
 
-    var resultado2 = @Html.Raw(Json.Encode(ViewBag.reportemensual));
+    var resultado2 = @Html.Raw(Json.Encode(ViewBag.ordenturno));
     var values2 = function PrintResults() {
         var devolverstring = [];
-        $.each(JSON.parse(resultado), function(key, element) {
+        $.each(JSON.parse(resultado2), function(key, element) {
             console.log(element.data);
             devolverstring.push(element.data);
         })
@@ -196,24 +253,24 @@
         labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
         datasets: [
         {
-            label: "Electronics",
-            fillColor: "rgb(210, 214, 222)",
-        strokeColor: "rgb(210, 214, 222)",
-        pointColor: "rgb(210, 214, 222)",
-        pointStrokeColor: "#c1c7d1",
-        pointHighlightFill: "#fff",
-        pointHighlightStroke: "rgb(220,220,220)",
-        data: values1()
+            label: "Mi Proyecto",
+            fillColor: "rgba(70,255,0,0.5)",
+            strokeColor: "rgba(70,255,0,0.5)",
+            pointColor: "rgba(70,255,0,0.5)",
+            pointStrokeColor: "#c1c7d1",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(70,255,0,0.5)",
+            data: values1()
         },
         {
-            label: "Digital Goods",
-            fillColor: "rgba(60,141,188,0.9)",
-            strokeColor: "rgba(60,141,188,0.8)",
-            pointColor: "#3b8bba",
+            label: "Mis Consultas",
+            fillColor: "rgba(255,0,0,0.3)",
+            strokeColor: "rgba(255,0,0,0.3)",
+            pointColor: "#F81949",
             pointStrokeColor: "rgba(60,141,188,1)",
             pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(60,141,188,1)",
-            data: values1()
+            pointHighlightStroke: "rgba(255,0,0,0.3)",
+            data: values2()
         }]
     };
     var salesChartOptions = {
@@ -257,4 +314,145 @@
 
     //Create the line chart
     salesChart.Line(salesChartData, salesChartOptions);
+
+
+
+    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+    var pieChart = new Chart(pieChartCanvas);
+    var PieData = [
+      {
+          value: 30,
+          color: "#f56954",
+          highlight: "#f56954",
+          label: "Psicología"
+      },
+      {
+          value: 15,
+          color: "#00a65a",
+          highlight: "#00a65a",
+          label: "Pediatría"
+      },
+      {
+          value: 20,
+          color: "#f39c12",
+          highlight: "#f39c12",
+          label: "Nutrición"
+      },
+      {
+          value: 10,
+          color: "#00c0ef",
+          highlight: "#00c0ef",
+          label: "Neurología"
+      },
+      {
+          value: 35,
+          color: "#3c8dbc",
+          highlight: "#3c8dbc",
+          label: "Ginecología"
+      },
+      {
+          value: 45,
+          color: "#d2d6de",
+          highlight: "#d2d6de",
+          label: "Neumología"
+      }
+    ];
+    var pieOptions = {
+        //Boolean - Whether we should show a stroke on each segment
+        segmentShowStroke: true,
+        //String - The colour of each segment stroke
+        segmentStrokeColor: "#fff",
+        //Number - The width of each segment stroke
+        segmentStrokeWidth: 1,
+        //Number - The percentage of the chart that we cut out of the middle
+        percentageInnerCutout: 50, // This is 0 for Pie charts
+        //Number - Amount of animation steps
+        animationSteps: 100,
+        //String - Animation easing effect
+        animationEasing: "easeOutBounce",
+        //Boolean - Whether we animate the rotation of the Doughnut
+        animateRotate: true,
+        //Boolean - Whether we animate scaling the Doughnut from the centre
+        animateScale: false,
+        //Boolean - whether to make the chart responsive to window resizing
+        responsive: true,
+        // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+        maintainAspectRatio: false,
+        //String - A legend template
+        legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
+        //String - A tooltip template
+        tooltipTemplate: "<%=value %> <%=label%> especilidad"
+    };
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    pieChart.Doughnut(PieData, pieOptions);
+
+
+
+    var areaChartDatos = {
+        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
+        datasets: [
+          {
+              label: "Resueltas",
+              fillColor: "rgba(210, 214, 222, 1)",
+              strokeColor: "rgba(210, 214, 222, 1)",
+              pointColor: "rgba(210, 214, 222, 1)",
+              pointStrokeColor: "#c1c7d1",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(220,220,220,1)",
+              data: [65, 59, 80, 81, 56, 55, 40]
+          },
+          {
+              label: "Pendientes",
+              fillColor: "rgba(60,141,188,0.9)",
+              strokeColor: "rgba(60,141,188,0.8)",
+              pointColor: "#3b8bba",
+              pointStrokeColor: "rgba(60,141,188,1)",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(60,141,188,1)",
+              data: [28, 48, 40, 19, 86, 27, 90]
+          }
+        ]
+    };
+
+    //-------------
+    //- BAR CHART -
+    //-------------
+    var barChartCanvas = $("#barChart").get(0).getContext("2d");
+    var barChart = new Chart(barChartCanvas);
+    var barChartData = areaChartDatos;
+    barChartData.datasets[1].fillColor = "#00a65a";
+    barChartData.datasets[1].strokeColor = "#00a65a";
+    barChartData.datasets[1].pointColor = "#00a65a";
+    var barChartOptions = {
+        //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+        scaleBeginAtZero: true,
+        //Boolean - Whether grid lines are shown across the chart
+        scaleShowGridLines: true,
+        //String - Colour of the grid lines
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        //Number - Width of the grid lines
+        scaleGridLineWidth: 1,
+        //Boolean - Whether to show horizontal lines (except X axis)
+        scaleShowHorizontalLines: true,
+        //Boolean - Whether to show vertical lines (except Y axis)
+        scaleShowVerticalLines: true,
+        //Boolean - If there is a stroke on each bar
+        barShowStroke: true,
+        //Number - Pixel width of the bar stroke
+        barStrokeWidth: 2,
+        //Number - Spacing between each of the X value sets
+        barValueSpacing: 5,
+        //Number - Spacing between data sets within X values
+        barDatasetSpacing: 1,
+        //String - A legend template
+        legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+        //Boolean - whether to make the chart responsive
+        responsive: true,
+        maintainAspectRatio: true
+    };
+
+    barChartOptions.datasetFill = false;
+    barChart.Bar(barChartData, barChartOptions);
+
 </script>

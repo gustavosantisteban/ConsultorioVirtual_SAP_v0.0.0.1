@@ -324,26 +324,26 @@ namespace SeguridadWebv2.Controllers
         [HttpGet]
         public ActionResult PartialCreateAmenite(string amenite)
         {
-            switch(amenite)
+            switch (amenite)
             {
                 case "0":
-                    AnamnesisCardiovascular cardio = new AnamnesisCardiovascular()
-                    {
-                        Fecha = DateTime.Now,
-                        Encabezado = "",
-                        Texto = ""
-                    };
+                    //AnamnesisCardiovascular cardio = new AnamnesisCardiovascular()
+                    //{
+                    //    Fecha = DateTime.Now,
+                    //    Encabezado = "",
+                    //    Texto = ""
+                    //};
                     return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
                 case "1":
-                    AnamnesisDisgestiva digestiva = new AnamnesisDisgestiva()
-                    {
-                        Fecha = DateTime.Now,
-                        Encabezado = "",
-                        Texto = ""
-                    };
+                    //AnamnesisDisgestiva digestiva = new AnamnesisDisgestiva()
+                    //{
+                    //    Fecha = DateTime.Now,
+                    //    Encabezado = "",
+                    //    Texto = ""
+                    //};
                     return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
                 case "2":
-                    AnamnesisRespiratoria respi = new AnamnesisRespiratoria()
+                    AnamnesisRespiratoria anamnesis = new AnamnesisRespiratoria()
                     {
                         Fecha = DateTime.Now,
                         Encabezado = "",
@@ -351,7 +351,7 @@ namespace SeguridadWebv2.Controllers
                     };
                     return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
             };
-            return PartialView();
+            return PartialView("~/Views/VideoConferencia/_Anamnesis.cshtml");
         }
         
     }
